@@ -8,6 +8,8 @@ const { db } = require("./firebase");
 const bcrypt = require("bcrypt");
 const PORT = process.env.PORT || 3001;
 
+db.settings({ ignoreUndefinedProperties: true });
+
 const app = express();
 app.use(bodyParser.json({ limit: "35mb" }));
 

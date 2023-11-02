@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import RenderItem from "../components/RenderItem.js";
 /*
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -22,11 +23,9 @@ const EisenhauerScreen = ({ navigation }) => {
   const [selectedKanbanCategory, setSelectedKanbanCategory] = useState("ToDo");
   const [selectedEisenhauerCategory, setSelectedEisenhauerCategory] =
     useState("ToDo");
-  const [modalMoreVisible, setModalMoreVisible] = useState(false);
   const [newName, setNewName] = useState("");
   const [modalNewVisible, setModalNewVisible] = useState(false);
   const [description, setDescription] = useState("");
-  const [selectedDescription, setSelectedDescription] = useState("");
   //const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
@@ -104,7 +103,7 @@ const EisenhauerScreen = ({ navigation }) => {
     setNewName("");
   };
 
-  const deleteToDo = () => {
+  const deleteToDo = (selectedToDo) => {
     if (selectedToDo) {
       fetch(`http://localhost:3001/api/delete/${selectedToDo.id}`, {
         method: "DELETE",
@@ -115,7 +114,7 @@ const EisenhauerScreen = ({ navigation }) => {
             (person) => person.id !== selectedToDo.id
           );
           setToDo(updatedPeople);
-          closeMoreModal();
+          //closeMoreModal();
         })
         .catch((error) => {
           console.error("Fehler beim Löschen des ToDos:", error);
@@ -123,7 +122,7 @@ const EisenhauerScreen = ({ navigation }) => {
     }
   };
 
-  const updateCategory = () => {
+  const updateCategory = (selectedToDo, kanbanCategory, eisenhauerCategory) => {
     if (selectedToDo) {
       fetch(`http://localhost:3001/api/updateCategory`, {
         method: "PUT",
@@ -131,8 +130,8 @@ const EisenhauerScreen = ({ navigation }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          categoryKanban: selectedKanbanCategory,
-          categoryEisenhauer: selectedEisenhauerCategory,
+          categoryKanban: kanbanCategory,
+          categoryEisenhauer: eisenhauerCategory,
           id: selectedToDo.id,
         }),
       })
@@ -142,13 +141,13 @@ const EisenhauerScreen = ({ navigation }) => {
             person.id === selectedToDo.id
               ? {
                   ...person,
-                  categoryKanban: selectedKanbanCategory,
-                  categoryEisenhauer: selectedEisenhauerCategory,
+                  categoryKanban: kanbanCategory,
+                  categoryEisenhauer: eisenhauerCategory,
                 }
               : person
           );
           setToDo(updatedPeople);
-          closeMoreModal();
+          //closeMoreModal();
         })
         .catch((error) => {
           console.error("Fehler beim Aktualisieren der Kategorie:", error);
@@ -156,19 +155,20 @@ const EisenhauerScreen = ({ navigation }) => {
     }
   };
 
-  const openMoreModal = (ToDo) => {
-    setSelectedToDo(ToDo);
-    setSelectedKanbanCategory(ToDo.categoryKanban);
-    setSelectedEisenhauerCategory(ToDo.categoryEisenhauer);
-    setSelectedDescription(ToDo.description);
-    setModalMoreVisible(true);
-  };
+  const renderItem = ({ item }) => (
+    <RenderItem
+      item={item}
+      onDelete={deleteToDo}
+      onCategoryUpdate={updateCategory}
+    />
+  );
+  /*
 
   const closeMoreModal = () => {
     setSelectedToDo(null);
     setSelectedKanbanCategory("ToDo");
-    setModalMoreVisible(false);
   };
+  */
 
   const openAddModal = () => {
     setSelectedKanbanCategory("ToDo");
@@ -218,107 +218,6 @@ const EisenhauerScreen = ({ navigation }) => {
     }
   };
   */
-
-  const renderItem = ({ item }) => (
-    <View
-      style={[
-        styles.itemContainer,
-        item.categoryKanban === "ToDo"
-          ? styles.greyItem
-          : item.categoryKanban === "InProgress"
-          ? styles.orangeItem
-          : item.categoryKanban === "Done"
-          ? styles.greenItem
-          : styles.defaultItem,
-      ]}
-    >
-      <Text style={styles.itemText}>{item.name}</Text>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalMoreVisible}
-        onRequestClose={closeMoreModal}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View style={styles.modalContainer}>
-            <Text>
-              Are you sure you want to delete{" "}
-              {selectedToDo ? selectedToDo.name : ""}?
-            </Text>
-            <Button title="Delete" onPress={deleteToDo} />
-            <Button title="Cancel" onPress={closeMoreModal} />
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-            padding: 20,
-          }}
-        >
-          <Text style={styles.headlineText}>Description:</Text>
-          <Text>{selectedDescription}</Text>
-          <Text style={styles.headlineText}>Category:</Text>
-          <View style={styles.pickerContainer}>
-            <RNPickerSelect
-              onValueChange={(value) => setSelectedKanbanCategory(value)}
-              items={[
-                { label: "ToDo", value: "ToDo" },
-                { label: "InProgress", value: "InProgress" },
-                { label: "Done", value: "Done" },
-              ]}
-              value={selectedKanbanCategory}
-              style={styles.picker}
-            />
-          </View>
-          <View style={styles.pickerContainer}>
-            <RNPickerSelect
-              onValueChange={(value) => setSelectedEisenhauerCategory(value)}
-              items={[
-                { label: "Important and Current", value: "importantCurrent" },
-                {
-                  label: "Important but not Current",
-                  value: "importantNotCurrent",
-                },
-                {
-                  label: "Current but not Important",
-                  value: "notImportantCurrent",
-                },
-                {
-                  label: "Neither important nor current",
-                  value: "notImportantNotCurrent",
-                },
-              ]}
-              value={selectedEisenhauerCategory}
-              style={styles.picker}
-            />
-          </View>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#007bff" }]}
-            onPress={updateCategory}
-          >
-            <Text style={styles.buttonText}>Update Category</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#dc3545" }]}
-            onPress={closeMoreModal}
-          >
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      <Button title="Weiteres" onPress={() => openMoreModal(item)} />
-    </View>
-  );
 
   return (
     <View style={styles.container}>

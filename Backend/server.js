@@ -1,0 +1,158 @@
+"use strict";
+
+//https://console.firebase.google.com/u/0/project/eisenhauer-kanban/firestore/data/~2Fuser~2FDaveVallecca@gmail.com?view=panel-view&scopeType=collection&scopeName=%2FDaveVallecca@gmail.com&query=
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const { db } = require("./firebase");
+const bcrypt = require("bcrypt");
+const PORT = process.env.PORT || 3001;
+
+const app = express();
+app.use(bodyParser.json({ limit: "35mb" }));
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: "100mb",
+    parameterLimit: 50000,
+  })
+);
+
+let email = "";
+
+app.post("/api/register", async (req, res) => {
+  const newUser = req.body;
+  try {
+    let hashedPassword = await hashPassword(newUser.password);
+
+    const userRef = db.collection("user").doc(newUser.email);
+    const doc = await userRef.get();
+
+    if (doc.exists) {
+      return res.sendStatus(300);
+    }
+
+    const res2 = await userRef.set({
+      email: newUser.email,
+      password: hashedPassword,
+    });
+
+    res.json(res2);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500); // Internal Server Error
+  }
+});
+
+app.post("/api/users/login", async (req, res) => {
+  const user = req.body;
+  email = user.email;
+
+  try {
+    const userRef = db.collection("user").doc(user.email);
+    const doc = await userRef.get();
+
+    if (!doc.exists) {
+      return res.sendStatus(400); // Benutzer nicht gefunden
+    }
+
+    const storedHashedPassword = doc.data().password;
+
+    // Passwort vergleichen
+    const passwordMatch = await comparePassword(
+      user.password,
+      storedHashedPassword
+    );
+
+    if (!passwordMatch) {
+      return res.sendStatus(401); // Passwort falsch
+    }
+
+    res.status(200).json(doc.data());
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500); // Internal Server Error
+  }
+});
+
+async function hashPassword(plaintextPassword) {
+  const hash = await bcrypt.hash(plaintextPassword, 10);
+  return hash;
+}
+
+async function comparePassword(plaintextPassword, hash) {
+  const result = await bcrypt.compare(plaintextPassword, hash);
+  return result;
+}
+
+app.get("/api/getAllToDos", async (req, res) => {
+  const collectionRef = db.collection(email); // Verwende die Collection-Referenz direkt
+  const snapshot = await collectionRef.get(); // Lese alle Dokumente in der Collection aus
+  const todos = [];
+
+  snapshot.forEach((doc) => {
+    // Iteriere durch die Dokumente und füge sie dem todos-Array hinzu
+    todos.push({
+      name: doc.data().name,
+      categoryKanban: doc.data().categoryKanban,
+      categoryEisenhauer: doc.data().categoryEisenhauer,
+      description: doc.data().description,
+      id: doc.data().id,
+    });
+  });
+
+  if (todos.length === 0) {
+    // Wenn die Collection leer ist, setze den Status auf 404
+    res.status(404);
+  }
+
+  res.json(todos);
+});
+
+app.post("/api/addNewToDo", async (req, res) => {
+  const newToDo = req.body;
+  const collectionRef = db.collection(email).doc(newToDo.id);
+  const res2 = await collectionRef.set({
+    name: newToDo.name,
+    categoryKanban: newToDo.categoryKanban,
+    categoryEisenhauer: newToDo.categoryEisenhauer,
+    description: newToDo.description,
+    id: newToDo.id,
+  });
+
+  res.json(newToDo);
+});
+
+app.put("/api/updateCategory", async (req, res) => {
+  const toDoId = req.body.id;
+  const updatedKanban = req.body.categoryKanban;
+  const updateEisenhauer = req.body.categoryEisenhauer;
+
+  const toDoRef = db.collection(email).doc(toDoId);
+  const res2 = await toDoRef.set(
+    {
+      categoryKanban: updatedKanban,
+      categoryEisenhauer: updateEisenhauer,
+    },
+    { merge: true }
+  );
+  res.json({ message: "Category updated successfully" });
+});
+
+app.delete("/api/delete/:id", async (req, res) => {
+  const toDoId = req.params.id; // Die ID direkt aus den Request-Parametern erhalten
+
+  const toDoRef = db.collection(email).doc(toDoId);
+
+  try {
+    await toDoRef.delete(); // Dokument aus der Datenbank löschen
+    res.json({ message: "ToDo deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
+});

@@ -1,0 +1,34 @@
+# Dependency directories
+node_modules/
+
+# Optional: Falls du npm oder yarn nutzt, kann dies hinzugefügt werden
+package-lock.json
+yarn.lock
+
+# Umgebungsspezifische Dateien
+.env
+
+# Log-Dateien
+logs/
+*.log
+
+# Build-Dateien
+/build
+/dist
+
+# Editor-spezifische Dateien
+.vscode/
+.idea/
+
+# Konfigurationsdateien
+config.js
+config.json
+
+# Temporäre Dateien
+*.tmp
+
+# MacOS-spezifische Dateien
+.DS_Store
+
+# Windows-spezifische Dateien
+Thumbs.db

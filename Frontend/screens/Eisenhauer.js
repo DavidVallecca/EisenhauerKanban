@@ -7,10 +7,11 @@ import {
   TextInput,
   Button,
   Modal,
-  TouchableOpacity,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import RenderItem from "../components/RenderItem.js";
+import { useFocusEffect } from "@react-navigation/native";
+
 /*
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -25,16 +26,18 @@ const EisenhauerScreen = ({ navigation }) => {
   const [newName, setNewName] = useState("");
   const [modalNewVisible, setModalNewVisible] = useState(false);
   const [description, setDescription] = useState("");
-  //const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    fetch("http://localhost:3001/api/getAllToDos")
-      .then((response) => response.json())
-      .then((data) => setToDo(data))
-      .catch((error) => {
-        console.error("Fehler beim Abrufen der Daten:", error);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Fetch data or perform other side-effects here
+      fetch("http://localhost:3001/api/getAllToDos")
+        .then((response) => response.json())
+        .then((data) => setToDo(data))
+        .catch((error) => {
+          console.error("Fehler beim Abrufen der Daten:", error);
+        });
+    }, [])
+  );
 
   const moveToKanban = () => {
     navigation.navigate("Kanban");
@@ -113,7 +116,6 @@ const EisenhauerScreen = ({ navigation }) => {
             (person) => person.id !== selectedToDo.id
           );
           setToDo(updatedPeople);
-          //closeMoreModal();
         })
         .catch((error) => {
           console.error("Fehler beim Löschen des ToDos:", error);
@@ -146,7 +148,6 @@ const EisenhauerScreen = ({ navigation }) => {
               : person
           );
           setToDo(updatedPeople);
-          //closeMoreModal();
         })
         .catch((error) => {
           console.error("Fehler beim Aktualisieren der Kategorie:", error);

@@ -7,10 +7,10 @@ import {
   TextInput,
   Button,
   Modal,
-  TouchableOpacity,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import RenderItem from "../components/RenderItem.js";
+import { useFocusEffect } from "@react-navigation/native";
 
 const KanbanScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
@@ -20,14 +20,17 @@ const KanbanScreen = ({ navigation }) => {
   const [newName, setNewName] = useState("");
   const [modalNewVisible, setModalNewVisible] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:3001/api/getAllToDos")
-      .then((response) => response.json())
-      .then((data) => setToDo(data))
-      .catch((error) => {
-        console.error("Fehler beim Abrufen der Daten:", error);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Fetch data or perform other side-effects here
+      fetch("http://localhost:3001/api/getAllToDos")
+        .then((response) => response.json())
+        .then((data) => setToDo(data))
+        .catch((error) => {
+          console.error("Fehler beim Abrufen der Daten:", error);
+        });
+    }, [])
+  );
 
   const moveToEisenhauer = () => {
     navigation.navigate("Eisenhauer");

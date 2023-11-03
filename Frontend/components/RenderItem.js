@@ -35,8 +35,8 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
   };
 
   const deleteToDo = () => {
-    onDelete(selectedToDo); // Hier wird die onDelete-Funktion aufgerufen, um die ausgewählte Aufgabe zu löschen
-    closeMoreModal(); // Schließe das Modal nach dem Löschen
+    onDelete(selectedToDo);
+    closeMoreModal();
   };
 
   const updateCategory = () => {
@@ -44,8 +44,8 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
       selectedToDo,
       selectedKanbanCategory,
       selectedEisenhauerCategory
-    ); // Hier werden die ausgewählten Kategorien übergeben
-    closeMoreModal(); // Schließe das Modal nach dem Aktualisieren der Kategorien
+    );
+    closeMoreModal();
   };
 
   return (

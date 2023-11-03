@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screens/LoginScreen.js";
 import Register from "./screens/RegisterScreen.js";
 import Eisenhauer from "./screens/Eisenhauer.js";
-import Kanban from "./screens/Kanban";
+import Kanban from "./screens/Kanban.js";
 
 const Stack = createStackNavigator();
 

@@ -41,7 +41,7 @@ app.post("/api/register", async (req, res) => {
       password: hashedPassword,
     });
 
-    res.json(res2);
+    return res.json(res2);
   } catch (error) {
     console.error(error);
     res.sendStatus(500); // Internal Server Error
@@ -90,12 +90,13 @@ async function comparePassword(plaintextPassword, hash) {
 }
 
 app.get("/api/getAllToDos", async (req, res) => {
-  const collectionRef = db.collection(email); // Verwende die Collection-Referenz direkt
-  const snapshot = await collectionRef.get(); // Lese alle Dokumente in der Collection aus
+  const collectionRef = db.collection(email);
+  const snapshot = await collectionRef.get();
   const todos = [];
 
+  console.log("Get all todos");
+
   snapshot.forEach((doc) => {
-    // Iteriere durch die Dokumente und füge sie dem todos-Array hinzu
     todos.push({
       name: doc.data().name,
       categoryKanban: doc.data().categoryKanban,
@@ -106,7 +107,6 @@ app.get("/api/getAllToDos", async (req, res) => {
   });
 
   if (todos.length === 0) {
-    // Wenn die Collection leer ist, setze den Status auf 404
     res.status(404);
   }
 
@@ -144,12 +144,11 @@ app.put("/api/updateCategory", async (req, res) => {
 });
 
 app.delete("/api/delete/:id", async (req, res) => {
-  const toDoId = req.params.id; // Die ID direkt aus den Request-Parametern erhalten
-
+  const toDoId = req.params.id;
   const toDoRef = db.collection(email).doc(toDoId);
 
   try {
-    await toDoRef.delete(); // Dokument aus der Datenbank löschen
+    await toDoRef.delete();
     res.json({ message: "ToDo deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });

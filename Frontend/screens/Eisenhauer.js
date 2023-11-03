@@ -162,13 +162,6 @@ const EisenhauerScreen = ({ navigation }) => {
       onCategoryUpdate={updateCategory}
     />
   );
-  /*
-
-  const closeMoreModal = () => {
-    setSelectedToDo(null);
-    setSelectedKanbanCategory("ToDo");
-  };
-  */
 
   const openAddModal = () => {
     setSelectedKanbanCategory("ToDo");

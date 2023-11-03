@@ -8,6 +8,7 @@ const { db } = require("./firebase");
 const bcrypt = require("bcrypt");
 const PORT = process.env.PORT || 3001;
 
+//lässt undefinierte Properties zu
 db.settings({ ignoreUndefinedProperties: true });
 
 const app = express();

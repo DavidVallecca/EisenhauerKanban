@@ -14,11 +14,9 @@ import RenderItem from "../components/RenderItem.js";
 
 const KanbanScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
-  const [selectedToDo, setSelectedToDo] = useState(null);
   const [selectedKanbanCategory, setSelectedKanbanCategory] = useState("ToDo");
   const [selectedEisenhauerCategory, setSelectedEisenhauerCategory] =
     useState("ToDo");
-  const [modalMoreVisible, setModalMoreVisible] = useState(false);
   const [newName, setNewName] = useState("");
   const [modalNewVisible, setModalNewVisible] = useState(false);
 

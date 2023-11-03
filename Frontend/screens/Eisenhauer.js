@@ -19,7 +19,6 @@ import ImageResizer from "react-native-image-resizer";
 
 const EisenhauerScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
-  const [selectedToDo, setSelectedToDo] = useState(null);
   const [selectedKanbanCategory, setSelectedKanbanCategory] = useState("ToDo");
   const [selectedEisenhauerCategory, setSelectedEisenhauerCategory] =
     useState("ToDo");

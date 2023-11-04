@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TextInput,
-  Button,
-  Modal,
-} from "react-native";
-import RNPickerSelect from "react-native-picker-select";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 import RenderItem from "../components/RenderItem.js";
 import { useFocusEffect } from "@react-navigation/native";
+import CreateNewToDo from "../components/CreateNewToDo.js";
 
 /*
 import * as ImagePicker from "expo-image-picker";
@@ -20,16 +12,9 @@ import ImageResizer from "react-native-image-resizer";
 
 const EisenhauerScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
-  const [selectedKanbanCategory, setSelectedKanbanCategory] = useState("ToDo");
-  const [selectedEisenhauerCategory, setSelectedEisenhauerCategory] =
-    useState("ToDo");
-  const [newName, setNewName] = useState("");
-  const [modalNewVisible, setModalNewVisible] = useState(false);
-  const [description, setDescription] = useState("");
 
   useFocusEffect(
     React.useCallback(() => {
-      // Fetch data or perform other side-effects here
       fetch("http://localhost:3001/api/getAllToDos")
         .then((response) => response.json())
         .then((data) => setToDo(data))
@@ -59,30 +44,13 @@ const EisenhauerScreen = ({ navigation }) => {
     (item) => item.categoryEisenhauer === "notImportantNotCurrent"
   );
 
-  function generateUUID() {
-    var d = new Date().getTime();
-    var d2 =
-      (typeof performance !== "undefined" &&
-        performance.now &&
-        performance.now() * 1000) ||
-      0;
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-      /[xy]/g,
-      function (c) {
-        var r = Math.random() * 16;
-        if (d > 0) {
-          r = (d + r) % 16 | 0;
-          d = Math.floor(d / 16);
-        } else {
-          r = (d2 + r) % 16 | 0;
-          d2 = Math.floor(d2 / 16);
-        }
-        return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
-      }
-    );
-  }
-
-  const addToDo = () => {
+  const addToDo = (
+    newName,
+    selectedKanbanCategory,
+    selectedEisenhauerCategory,
+    description,
+    uuid
+  ) => {
     fetch("http://localhost:3001/api/addNewToDo", {
       method: "POST",
       headers: {
@@ -93,7 +61,7 @@ const EisenhauerScreen = ({ navigation }) => {
         categoryKanban: selectedKanbanCategory,
         categoryEisenhauer: selectedEisenhauerCategory,
         description: description,
-        id: generateUUID(),
+        id: uuid,
       }),
     })
       .then((response) => response.json())
@@ -101,8 +69,6 @@ const EisenhauerScreen = ({ navigation }) => {
       .catch((error) => {
         console.error("Fehler beim Hinzufügen der Person:", error);
       });
-    closeAddModal();
-    setNewName("");
   };
 
   const deleteToDo = (selectedToDo) => {
@@ -138,16 +104,16 @@ const EisenhauerScreen = ({ navigation }) => {
       })
         .then((response) => response.json())
         .then(() => {
-          const updatedPeople = toDo.map((person) =>
-            person.id === selectedToDo.id
+          const updatedToDos = toDo.map((toDo) =>
+            toDo.id === selectedToDo.id
               ? {
-                  ...person,
+                  ...toDo,
                   categoryKanban: kanbanCategory,
                   categoryEisenhauer: eisenhauerCategory,
                 }
-              : person
+              : toDo
           );
-          setToDo(updatedPeople);
+          setToDo(updatedToDos);
         })
         .catch((error) => {
           console.error("Fehler beim Aktualisieren der Kategorie:", error);
@@ -162,16 +128,6 @@ const EisenhauerScreen = ({ navigation }) => {
       onCategoryUpdate={updateCategory}
     />
   );
-
-  const openAddModal = () => {
-    setSelectedKanbanCategory("ToDo");
-    setSelectedEisenhauerCategory("importantCurrent");
-    setModalNewVisible(true);
-  };
-
-  const closeAddModal = () => {
-    setModalNewVisible(false);
-  };
 
   /*
   const uploadImage = async () => {
@@ -216,83 +172,10 @@ const EisenhauerScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View>
         <Button title="Kanban" onPress={moveToKanban} />
-        <Button title="New ToDo" onPress={openAddModal} />
       </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalNewVisible}
-        onRequestClose={closeAddModal}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-            padding: 20,
-          }}
-        >
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              margin: 10,
-              padding: 8,
-            }}
-            placeholder="Enter name"
-            autoCapitalize="none"
-            onChangeText={(text) => setNewName(text)}
-            value={newName}
-          />
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              margin: 10,
-              padding: 8,
-            }}
-            placeholder="Enter description"
-            autoCapitalize="none"
-            onChangeText={(text) => setDescription(text)}
-          />
-          {/*<Button title="Bild auswählen" onPress={uploadImage} />*/}
-          <Text>Kanban:</Text>
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedKanbanCategory(value)}
-            items={[
-              { label: "ToDo", value: "ToDo" },
-              { label: "InProgress", value: "InProgress" },
-              { label: "Done", value: "Done" },
-            ]}
-            value={selectedKanbanCategory}
-          />
-          <Text>Eisenhauer:</Text>
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedEisenhauerCategory(value)}
-            items={[
-              { label: "Important and Current", value: "importantCurrent" },
-              {
-                label: "Important but not Current",
-                value: "importantNotCurrent",
-              },
-              {
-                label: "Current but not Important",
-                value: "notImportantCurrent",
-              },
-              {
-                label: "Neither important nor current",
-                value: "notImportantNotCurrent",
-              },
-            ]}
-            value={selectedEisenhauerCategory}
-          />
-        </View>
-        <Button title="Add ToDo" onPress={addToDo} />
-        <Button title="Cancel" onPress={closeAddModal} />
-      </Modal>
+      <View>
+        <CreateNewToDo addToDo={addToDo} />
+      </View>
       <Text style={styles.headlineText}>Important and Current</Text>
       <View style={styles.roundedBorderView}>
         <FlatList

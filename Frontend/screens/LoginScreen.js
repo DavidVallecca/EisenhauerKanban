@@ -37,6 +37,10 @@ const LoginScreen = ({ navigation }) => {
     navigation.navigate("Register");
   };
 
+  handleButtonPress = () => {
+    console.log("Button wurde gedrückt");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Anmelden</Text>

@@ -26,6 +26,8 @@ const LoginScreen = ({ navigation }) => {
         return response.json();
       })
       .then((data) => {
+        setEmail("");
+        setPassword("");
         navigation.navigate("Eisenhauer");
       })
       .catch((error) => {

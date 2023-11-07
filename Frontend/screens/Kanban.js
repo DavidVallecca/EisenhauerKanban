@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList, Button } from "react-native";
-import RenderItem from "../components/RenderItem.js";
 import { useFocusEffect } from "@react-navigation/native";
+
+import RenderItem from "../components/RenderItem.js";
 import CreateNewToDo from "../components/CreateNewToDo.js";
+import Footer from "../components/Footer.js";
 
 const KanbanScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
@@ -18,8 +20,16 @@ const KanbanScreen = ({ navigation }) => {
     }, [])
   );
 
+  const moveToKanban = () => {
+    navigation.navigate("Kanban");
+  };
+
   const moveToEisenhauer = () => {
     navigation.navigate("Eisenhauer");
+  };
+
+  const moveToLogin = () => {
+    navigation.navigate("Login");
   };
 
   const dataToDo = toDo.filter((item) => item.categoryKanban === "ToDo");
@@ -115,34 +125,41 @@ const KanbanScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Button title="Eisenhauer" onPress={moveToEisenhauer} />
+      <View style={styles.containerContent}>
+        <View>
+          <CreateNewToDo addToDo={addToDo} />
+        </View>
+        <Text style={styles.headlineText}>ToDo</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataToDo}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+        <Text style={styles.headlineText}>In Progress</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataInProgress}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+        <Text style={styles.headlineText}>Done</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataDone}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </View>
       <View>
-        <CreateNewToDo addToDo={addToDo} />
-      </View>
-      <Text style={styles.headlineText}>ToDo</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataToDo}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-      <Text style={styles.headlineText}>In Progress</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataInProgress}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-      <Text style={styles.headlineText}>Done</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataDone}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+        <Footer
+          pageProp={"Kanban"}
+          switchToKanban={moveToKanban}
+          switchToEisenhauer={moveToEisenhauer}
+          switchToLogin={moveToLogin}
         />
       </View>
     </View>
@@ -153,10 +170,11 @@ export default KanbanScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  containerContent: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 100,
-    paddingBottom: 100,
   },
   roundedBorderView: {
     borderWidth: 2,
@@ -164,62 +182,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: 350,
-    height: 160,
-  },
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 5,
-    borderWidth: 1,
-    borderColor: "#191d1f",
-    borderRadius: 5,
-  },
-  modalContainer: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-    width: "80%",
-    alignItems: "center",
-  },
-  pickerContainer: {
-    borderColor: "#007bff",
-    borderWidth: 2,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-  },
-  picker: {
-    fontSize: 16,
-    color: "#007bff",
-  },
-  defaultItem: {
-    backgroundColor: "white",
-  },
-  greenItem: {
-    backgroundColor: "#368a39",
-  },
-  orangeItem: {
-    backgroundColor: "#e0b107",
-  },
-  greyItem: {
-    backgroundColor: "#646366",
-  },
-  itemText: {
-    fontSize: 20,
+    height: 150,
   },
   headlineText: {
     fontSize: 20,
     color: "#151f24",
-  },
-  button: {
-    marginHorizontal: 10,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: "#007bff",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
   },
 });

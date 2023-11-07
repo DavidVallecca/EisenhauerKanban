@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Text, View, Button, Modal, TextInput } from "react-native";
+import {
+  Text,
+  View,
+  Button,
+  Modal,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
 const CreateNewToDo = ({ addToDo }) => {
@@ -67,77 +75,156 @@ const CreateNewToDo = ({ addToDo }) => {
         visible={modalNewVisible}
         onRequestClose={closeAddModal}
       >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-            padding: 20,
-          }}
-        >
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              margin: 10,
-              padding: 8,
-            }}
-            placeholder="Enter name"
-            autoCapitalize="none"
-            onChangeText={(text) => setNewName(text)}
-            value={newName}
-          />
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              margin: 10,
-              padding: 8,
-            }}
-            placeholder="Enter description"
-            autoCapitalize="none"
-            onChangeText={(text) => setDescription(text)}
-          />
-          {/*<Button title="Bild auswählen" onPress={uploadImage} />*/}
-          <Text>Kanban:</Text>
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedKanbanCategory(value)}
-            items={[
-              { label: "ToDo", value: "ToDo" },
-              { label: "InProgress", value: "InProgress" },
-              { label: "Done", value: "Done" },
-            ]}
-            value={selectedKanbanCategory}
-          />
-          <Text>Eisenhauer:</Text>
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedEisenhauerCategory(value)}
-            items={[
-              { label: "Important and Current", value: "importantCurrent" },
-              {
-                label: "Important but not Current",
-                value: "importantNotCurrent",
-              },
-              {
-                label: "Current but not Important",
-                value: "notImportantCurrent",
-              },
-              {
-                label: "Neither important nor current",
-                value: "notImportantNotCurrent",
-              },
-            ]}
-            value={selectedEisenhauerCategory}
-          />
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.headlineText}>Name:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter name"
+              autoCapitalize="none"
+              onChangeText={(text) => setNewName(text)}
+              value={newName}
+            />
+            <Text style={styles.headlineText}>Description:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter description"
+              autoCapitalize="none"
+              onChangeText={(text) => setDescription(text)}
+            />
+            {/*<Button title="Bild auswählen" onPress={uploadImage} />*/}
+            <Text style={styles.headlineText}>Kanban:</Text>
+            <RNPickerSelect
+              style={styles.picker}
+              onValueChange={(value) => setSelectedKanbanCategory(value)}
+              items={[
+                { label: "ToDo", value: "ToDo" },
+                { label: "InProgress", value: "InProgress" },
+                { label: "Done", value: "Done" },
+              ]}
+              value={selectedKanbanCategory}
+            />
+            <Text style={styles.headlineText}>Eisenhauer:</Text>
+            <RNPickerSelect
+              style={styles.picker}
+              onValueChange={(value) => setSelectedEisenhauerCategory(value)}
+              items={[
+                { label: "Important and Current", value: "importantCurrent" },
+                {
+                  label: "Important but not Current",
+                  value: "importantNotCurrent",
+                },
+                {
+                  label: "Current but not Important",
+                  value: "notImportantCurrent",
+                },
+                {
+                  label: "Neither important nor current",
+                  value: "notImportantNotCurrent",
+                },
+              ]}
+              value={selectedEisenhauerCategory}
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.buttonAdd}
+                title="Add ToDo"
+                onPress={() => addToDoHandler()}
+              >
+                <Text style={styles.buttonAddText}>+</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonCancel}
+                onPress={closeAddModal}
+              >
+                <Text style={styles.buttonCancelText}>X</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-        <Button title="Add ToDo" onPress={() => addToDoHandler()} />
-        <Button title="Cancel" onPress={closeAddModal} />
       </Modal>
     </View>
   );
 };
 
 export default CreateNewToDo;
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    height: "50%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+  },
+  picker: {
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      borderWidth: 1,
+      borderColor: "gray",
+      borderRadius: 5,
+      color: "black",
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingVertical: 8,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: "gray",
+      borderRadius: 5,
+      color: "black",
+    },
+  },
+  headlineText: {
+    fontSize: 18,
+    fontFamily: "Helvetica Neue",
+    paddingTop: 10,
+    marginTop: 8,
+    marginBottom: 3,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  buttonAdd: {
+    paddingHorizontal: 10,
+    paddingVertical: 0,
+    borderRadius: 3,
+    borderWidth: 1,
+    backgroundColor: "green",
+    marginRight: 20,
+  },
+  buttonAddText: {
+    fontSize: 40,
+  },
+  buttonCancel: {
+    paddingHorizontal: 13,
+    paddingVertical: 0,
+    borderRadius: 3,
+    borderWidth: 1,
+    backgroundColor: "red",
+    marginLeft: 20,
+  },
+  buttonCancelText: {
+    paddingTop: 10,
+    fontSize: 28,
+  },
+});

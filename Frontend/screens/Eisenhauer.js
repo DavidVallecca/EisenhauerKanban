@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
-import RenderItem from "../components/RenderItem.js";
 import { useFocusEffect } from "@react-navigation/native";
+import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+
+import RenderItem from "../components/RenderItem.js";
 import CreateNewToDo from "../components/CreateNewToDo.js";
+import Footer from "../components/Footer.js";
 
 /*
 import * as ImagePicker from "expo-image-picker";
@@ -26,6 +28,14 @@ const EisenhauerScreen = ({ navigation }) => {
 
   const moveToKanban = () => {
     navigation.navigate("Kanban");
+  };
+
+  const moveToEisenhauer = () => {
+    navigation.navigate("Eisenhauer");
+  };
+
+  const moveToLogin = () => {
+    navigation.navigate("Login");
   };
 
   const dataImportantCurrent = toDo.filter(
@@ -170,42 +180,49 @@ const EisenhauerScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Button title="Kanban" onPress={moveToKanban} />
+      <View style={styles.containerContent}>
+        <View>
+          <CreateNewToDo addToDo={addToDo} />
+        </View>
+        <Text style={styles.headlineText}>Important and Current</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataImportantCurrent}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+        <Text style={styles.headlineText}>Important but not Current</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataImportantNotCurrent}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+        <Text style={styles.headlineText}>Not Important but Current</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataNotImportantCurrent}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+        <Text style={styles.headlineText}>Neither Important nor Current</Text>
+        <View style={styles.roundedBorderView}>
+          <FlatList
+            data={dataNotImportantNotCurrent}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </View>
       <View>
-        <CreateNewToDo addToDo={addToDo} />
-      </View>
-      <Text style={styles.headlineText}>Important and Current</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataImportantCurrent}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-      <Text style={styles.headlineText}>Important but not Current</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataImportantNotCurrent}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-      <Text style={styles.headlineText}>Not Important but Current</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataNotImportantCurrent}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-      <Text style={styles.headlineText}>Neither Important nor Current</Text>
-      <View style={styles.roundedBorderView}>
-        <FlatList
-          data={dataNotImportantNotCurrent}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+        <Footer
+          pageProp={"Eisenhauer"}
+          switchToKanban={moveToKanban}
+          switchToEisenhauer={moveToEisenhauer}
+          switchToLogin={moveToLogin}
         />
       </View>
     </View>
@@ -216,10 +233,12 @@ export default EisenhauerScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 40,
+  },
+  containerContent: {
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 100,
-    paddingBottom: 100,
+    flex: 1,
   },
   roundedBorderView: {
     borderWidth: 2,
@@ -227,62 +246,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: 350,
-    height: 160,
-  },
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 5,
-    borderWidth: 1,
-    borderColor: "#191d1f",
-    borderRadius: 5,
-  },
-  modalContainer: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-    width: "80%",
-    alignItems: "center",
-  },
-  pickerContainer: {
-    borderColor: "#007bff",
-    borderWidth: 2,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-  },
-  picker: {
-    fontSize: 16,
-    color: "#007bff",
-  },
-  defaultItem: {
-    backgroundColor: "white",
-  },
-  greenItem: {
-    backgroundColor: "#368a39",
-  },
-  orangeItem: {
-    backgroundColor: "#e0b107",
-  },
-  greyItem: {
-    backgroundColor: "#646366",
-  },
-  itemText: {
-    fontSize: 20,
+    height: 150,
   },
   headlineText: {
     fontSize: 20,
     color: "#151f24",
-  },
-  button: {
-    marginHorizontal: 10,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: "#007bff",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
   },
 });

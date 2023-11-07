@@ -22,14 +22,15 @@ app.use(
   })
 );
 
-let email = "";
+let currentUser = "";
 
 app.post("/api/register", async (req, res) => {
   const newUser = req.body;
+  email = newUser.email;
   try {
     let hashedPassword = await hashPassword(newUser.password);
 
-    const userRef = db.collection("user").doc(newUser.email);
+    const userRef = db.collection("user").doc(String(email));
     const doc = await userRef.get();
 
     if (doc.exists) {
@@ -50,10 +51,10 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/users/login", async (req, res) => {
   const user = req.body;
-  email = user.email;
+  const email = user.email;
 
   try {
-    const userRef = db.collection("user").doc(user.email);
+    const userRef = db.collection("user").doc(String(email));
     const doc = await userRef.get();
 
     if (!doc.exists) {
@@ -71,7 +72,7 @@ app.post("/api/users/login", async (req, res) => {
     if (!passwordMatch) {
       return res.sendStatus(401); // Passwort falsch
     }
-
+    currentUser = email;
     res.status(200).json(doc.data());
   } catch (error) {
     console.error(error);
@@ -90,11 +91,9 @@ async function comparePassword(plaintextPassword, hash) {
 }
 
 app.get("/api/getAllToDos", async (req, res) => {
-  const collectionRef = db.collection(email);
+  const collectionRef = db.collection(String(currentUser));
   const snapshot = await collectionRef.get();
   const todos = [];
-
-  console.log("Get all todos");
 
   snapshot.forEach((doc) => {
     todos.push({
@@ -115,7 +114,9 @@ app.get("/api/getAllToDos", async (req, res) => {
 
 app.post("/api/addNewToDo", async (req, res) => {
   const newToDo = req.body;
-  const collectionRef = db.collection(email).doc(newToDo.id);
+  const toDoId = newToDo.id;
+
+  const collectionRef = db.collection(String(currentUser)).doc(String(toDoId));
   const res2 = await collectionRef.set({
     name: newToDo.name,
     categoryKanban: newToDo.categoryKanban,
@@ -132,7 +133,7 @@ app.put("/api/updateCategory", async (req, res) => {
   const updatedKanban = req.body.categoryKanban;
   const updateEisenhauer = req.body.categoryEisenhauer;
 
-  const toDoRef = db.collection(email).doc(toDoId);
+  const toDoRef = db.collection(String(currentUser)).doc(String(toDoId));
   const res2 = await toDoRef.set(
     {
       categoryKanban: updatedKanban,
@@ -145,7 +146,7 @@ app.put("/api/updateCategory", async (req, res) => {
 
 app.delete("/api/delete/:id", async (req, res) => {
   const toDoId = req.params.id;
-  const toDoRef = db.collection(email).doc(toDoId);
+  const toDoRef = db.collection(String(currentUser)).doc(String(toDoId));
 
   try {
     await toDoRef.delete();

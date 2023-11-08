@@ -6,6 +6,7 @@ import {
   Button,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -94,6 +95,12 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
             padding: 20,
           }}
         >
+          <Image
+            source={{
+              uri: `data:image/jpeg;base64,${item.image}`,
+            }}
+            style={{ height: 200, width: 266 }}
+          />
           <Text style={styles.headlineText}>Description:</Text>
           <Text>{selectedDescription}</Text>
           <Text style={styles.headlineText}>Category:</Text>

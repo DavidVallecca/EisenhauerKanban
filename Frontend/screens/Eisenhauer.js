@@ -7,9 +7,7 @@ import CreateNewToDo from "../components/CreateNewToDo.js";
 import Footer from "../components/Footer.js";
 
 /*
-import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
-import ImageResizer from "react-native-image-resizer";
+
 */
 
 const EisenhauerScreen = ({ navigation }) => {
@@ -59,6 +57,7 @@ const EisenhauerScreen = ({ navigation }) => {
     selectedKanbanCategory,
     selectedEisenhauerCategory,
     description,
+    image,
     uuid
   ) => {
     fetch("http://localhost:3001/api/addNewToDo", {
@@ -71,6 +70,7 @@ const EisenhauerScreen = ({ navigation }) => {
         categoryKanban: selectedKanbanCategory,
         categoryEisenhauer: selectedEisenhauerCategory,
         description: description,
+        image: image,
         id: uuid,
       }),
     })
@@ -140,42 +140,7 @@ const EisenhauerScreen = ({ navigation }) => {
   );
 
   /*
-  const uploadImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 4],
-      quality: 1,
-    });
-    resize(result.assets[0].uri);
-  };
-
-  const resize = async (imageUri) => {
-    if (!imageUri) return;
-
-    console.log("Uri_ " + imageUri);
-    try {
-      let result = await ImageResizer.createResizedImage(
-        imageUri,
-        800,
-        600,
-        "JPEG",
-        80,
-        0,
-        undefined,
-        false
-      );
-      console.log(result.uri);
-      
-      const base64 = await FileSystem.readAsStringAsync(result.uri, {
-        encoding: "base64",
-      });
-      console.log("base 64 encoded: " + base64); 
-      
-    } catch (error) {
-      console.log("Unable to resize the photo: " + error);
-    }
-  };
+  
   */
 
   return (

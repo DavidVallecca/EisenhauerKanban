@@ -101,6 +101,7 @@ app.get("/api/getAllToDos", async (req, res) => {
       categoryKanban: doc.data().categoryKanban,
       categoryEisenhauer: doc.data().categoryEisenhauer,
       description: doc.data().description,
+      image: doc.data().image,
       id: doc.data().id,
     });
   });
@@ -122,6 +123,7 @@ app.post("/api/addNewToDo", async (req, res) => {
     categoryKanban: newToDo.categoryKanban,
     categoryEisenhauer: newToDo.categoryEisenhauer,
     description: newToDo.description,
+    image: newToDo.image,
     id: newToDo.id,
   });
 

@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 const CreateNewToDo = ({ addToDo }) => {
   const [selectedKanbanCategory, setSelectedKanbanCategory] = useState("ToDo");
@@ -16,6 +18,7 @@ const CreateNewToDo = ({ addToDo }) => {
     useState("ToDo");
   const [newName, setNewName] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setIamge] = useState("");
   const [modalNewVisible, setModalNewVisible] = useState(false);
 
   const openAddModal = () => {
@@ -59,10 +62,26 @@ const CreateNewToDo = ({ addToDo }) => {
       selectedKanbanCategory,
       selectedEisenhauerCategory,
       description,
+      image,
       generateUUID()
     );
     closeAddModal();
   }
+
+  const uploadImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 4],
+      quality: 0.8,
+    });
+    console.log(result);
+    const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, {
+      encoding: "base64",
+    });
+
+    setIamge(base64);
+  };
 
   return (
     <View>
@@ -77,6 +96,7 @@ const CreateNewToDo = ({ addToDo }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+            <Button onPress={uploadImage} title="Test" />
             <Text style={styles.headlineText}>Name:</Text>
             <TextInput
               style={styles.input}

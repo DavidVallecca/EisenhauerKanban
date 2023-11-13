@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
+import { Picker } from "@react-native-picker/picker";
 
 const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
   const [modalMoreVisible, setModalMoreVisible] = useState(false);
@@ -105,38 +105,43 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
           <Text>{selectedDescription}</Text>
           <Text style={styles.headlineText}>Category:</Text>
           <View style={styles.pickerContainer}>
-            <RNPickerSelect
-              onValueChange={(value) => setSelectedKanbanCategory(value)}
-              items={[
-                { label: "ToDo", value: "ToDo" },
-                { label: "InProgress", value: "InProgress" },
-                { label: "Done", value: "Done" },
-              ]}
-              value={selectedKanbanCategory}
-              style={styles.picker}
-            />
+            <Picker
+              style={{ width: 200, height: 100 }}
+              selectedValue={selectedKanbanCategory}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedKanbanCategory(itemValue)
+              }
+            >
+              <Picker.Item label="ToDo" value="ToDo" />
+              <Picker.Item label="InProgress" value="InProgress" />
+              <Picker.Item label="Done" value="Done" />
+            </Picker>
           </View>
           <View style={styles.pickerContainer}>
-            <RNPickerSelect
-              onValueChange={(value) => setSelectedEisenhauerCategory(value)}
-              items={[
-                { label: "Important and Current", value: "importantCurrent" },
-                {
-                  label: "Important but not Current",
-                  value: "importantNotCurrent",
-                },
-                {
-                  label: "Current but not Important",
-                  value: "notImportantCurrent",
-                },
-                {
-                  label: "Neither important nor current",
-                  value: "notImportantNotCurrent",
-                },
-              ]}
-              value={selectedEisenhauerCategory}
-              style={styles.picker}
-            />
+            <Picker
+              style={{ width: 200, height: 100 }}
+              selectedValue={selectedEisenhauerCategory}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedEisenhauerCategory(itemValue)
+              }
+            >
+              <Picker.Item
+                label="Important and Current"
+                value="importantCurrent"
+              />
+              <Picker.Item
+                label="Important but not Current"
+                value="importantNotCurrent"
+              />
+              <Picker.Item
+                label="Current but not Important"
+                value="notImportantCurrent"
+              />
+              <Picker.Item
+                label="Neither important nor current"
+                value="notImportantNotCurrent"
+              />
+            </Picker>
           </View>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: "#007bff" }]}

@@ -11,16 +11,25 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": ["expo-image-picker"],
-    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      "expo-image-picker"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ios.StudienarbeitKanbanEisenhauer.Frontend"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "android.StudienarbeitKanbanEisenhauer.Frontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"

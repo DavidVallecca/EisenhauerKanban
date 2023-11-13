@@ -26,8 +26,9 @@ let currentUser = "";
 
 app.post("/api/register", async (req, res) => {
   const newUser = req.body;
-  email = newUser.email;
+  const email = newUser.email;
   try {
+    console.log("Register Password after clienthashing: " + newUser.password);
     let hashedPassword = await hashPassword(newUser.password);
 
     const userRef = db.collection("user").doc(String(email));

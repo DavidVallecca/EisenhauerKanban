@@ -11,31 +11,26 @@ import { sha256 } from "react-native-sha256";
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [hashedPassword, setHashedPassword] = useState("");
 
-  const convertSHA = async (input) => {
-    console.log(input);
-    sha256(input).then((hash) => {
-      console.log(hash);
-      return hash;
+  const convertSHA = () => {
+    sha256(password).then((hash) => {
+      handleRegister(hash);
     });
   };
 
-  const handleRegister = async () => {
+  const handleRegister = (hash) => {
     try {
-      //const hashedPassword = await convertSHA(password);
-      console.log;
       fetch("http://localhost:3001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email, password: password }),
+        body: JSON.stringify({ email: email, password: hash }),
       })
         .then((response) => response.json())
         .then((data) => {
           console.log("Registriert mit:", data.email, data.password);
-          navigation.navigate("Register");
+          navigation.navigate("Login");
         })
         .catch((error) => {
           console.error("Fehler beim Hinzufügen der Person:", error);
@@ -64,7 +59,7 @@ const RegisterScreen = ({ navigation }) => {
         autoCapitalize="none"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+      <TouchableOpacity style={styles.registerButton} onPress={convertSHA}>
         <Text style={styles.buttonText}>Registrieren</Text>
       </TouchableOpacity>
     </View>

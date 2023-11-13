@@ -6,18 +6,25 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { sha256 } from "react-native-sha256";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
+  const convertSHA = () => {
+    sha256(password).then((hash) => {
+      handleLogin(hash);
+    });
+  };
+
+  const handleLogin = (hash) => {
     fetch("http://localhost:3001/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email, password: password }),
+      body: JSON.stringify({ email: email, password: hash }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -62,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
         autoCapitalize="none"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity style={styles.loginButton} onPress={convertSHA}>
         <Text style={styles.buttonText}>Anmelden</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>

@@ -43,6 +43,7 @@ const KanbanScreen = ({ navigation }) => {
     selectedKanbanCategory,
     selectedEisenhauerCategory,
     description,
+    image,
     uuid
   ) => {
     fetch("http://localhost:3001/api/addNewToDo", {
@@ -55,6 +56,7 @@ const KanbanScreen = ({ navigation }) => {
         categoryKanban: selectedKanbanCategory,
         categoryEisenhauer: selectedEisenhauerCategory,
         description: description,
+        image: image,
         id: uuid,
       }),
     })

@@ -73,9 +73,8 @@ const CreateNewToDo = ({ addToDo }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [3, 4],
-      quality: 0.8,
+      quality: 0.01,
     });
-    console.log(result);
     const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, {
       encoding: "base64",
     });
@@ -96,7 +95,7 @@ const CreateNewToDo = ({ addToDo }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Button onPress={uploadImage} title="Test" />
+            <Button onPress={uploadImage} title="Add Image" />
             <Text style={styles.headlineText}>Name:</Text>
             <TextInput
               style={styles.input}
@@ -115,7 +114,7 @@ const CreateNewToDo = ({ addToDo }) => {
             {/*<Button title="Bild auswählen" onPress={uploadImage} />*/}
             <Text style={styles.headlineText}>Kanban:</Text>
             <Picker
-              style={{ width: 200, height: 100 }}
+              style={styles.picker}
               selectedValue={selectedKanbanCategory}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedKanbanCategory(itemValue)
@@ -127,7 +126,7 @@ const CreateNewToDo = ({ addToDo }) => {
             </Picker>
             <Text style={styles.headlineText}>Eisenhauer:</Text>
             <Picker
-              style={{ width: 200, height: 200 }}
+              style={styles.picker}
               selectedValue={selectedEisenhauerCategory}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedEisenhauerCategory(itemValue)
@@ -183,10 +182,9 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: "80%",
-    height: "50%",
+    height: "70%",
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 30,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -198,29 +196,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   picker: {
-    inputIOS: {
-      fontSize: 16,
-      paddingVertical: 12,
-      paddingHorizontal: 20,
-      borderWidth: 1,
-      borderColor: "gray",
-      borderRadius: 5,
-      color: "black",
-    },
-    inputAndroid: {
-      fontSize: 16,
-      paddingVertical: 8,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: "gray",
-      borderRadius: 5,
-      color: "black",
-    },
+    width: 200,
+    height: 200,
+    marginTop: -45,
+    marginBottom: -45,
   },
   headlineText: {
     fontSize: 18,
     fontFamily: "Helvetica Neue",
-    paddingTop: 10,
+    paddingTop: 5,
     marginTop: 8,
     marginBottom: 3,
   },

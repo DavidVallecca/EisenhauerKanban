@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
@@ -74,13 +75,17 @@ const CreateNewToDo = ({ addToDo }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [3, 4],
-      quality: 0.01,
+      quality: 0.05,
     });
     const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, {
       encoding: "base64",
     });
 
-    setIamge(base64);
+    if (base64.length <= 1048487) {
+      setIamge(base64);
+    } else {
+      Alert.alert("Image is too large");
+    }
   };
 
   return (

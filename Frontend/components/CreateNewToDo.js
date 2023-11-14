@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
   },
   headlineText: {
     fontSize: 18,
+    fontWeight: "condensedBold",
     fontFamily: "Helvetica Neue",
     paddingTop: 5,
     marginTop: 8,

@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import {
   Text,
   View,
-  Button,
   Modal,
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
@@ -26,6 +26,7 @@ const CreateNewToDo = ({ addToDo }) => {
     setSelectedEisenhauerCategory("importantCurrent");
     setNewName("");
     setDescription("");
+    setIamge("");
     setModalNewVisible(true);
   };
 
@@ -97,7 +98,28 @@ const CreateNewToDo = ({ addToDo }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Button onPress={uploadImage} title="Add Image" />
+            <View style={styles.imageInputContainer}>
+              {image === "" ? (
+                <Text></Text>
+              ) : (
+                <Text style={styles.imageGreenHook}></Text>
+              )}
+              <TouchableOpacity
+                style={styles.buttonAddImage}
+                onPress={uploadImage}
+              >
+                <Text style={styles.buttonAddImageText}>Add Image</Text>
+              </TouchableOpacity>
+              {image === "" ? (
+                <Text></Text>
+              ) : (
+                <Image
+                  style={styles.imageGreenHook}
+                  resizeMode="contain"
+                  source={require("../assets/greenHook.jpeg")}
+                />
+              )}
+            </View>
             <Text style={styles.headlineText}>Name:</Text>
             <TextInput
               style={styles.input}
@@ -189,6 +211,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  imageInputContainer: {
+    flexDirection: "row",
+  },
   input: {
     height: 40,
     borderColor: "gray",
@@ -211,7 +236,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     marginTop: 20,
   },
   buttonNewToDo: {
@@ -223,6 +247,20 @@ const styles = StyleSheet.create({
   },
   buttonNewToDoText: {
     fontSize: 15,
+  },
+  buttonAddImage: {
+    borderWidth: 1,
+    borderRadius: 3,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    backgroundColor: "#d5dbd6",
+  },
+  buttonAddImageText: {
+    fontSize: 17,
+  },
+  imageGreenHook: {
+    width: 40,
+    height: 28,
   },
   buttonAdd: {
     paddingHorizontal: 10,

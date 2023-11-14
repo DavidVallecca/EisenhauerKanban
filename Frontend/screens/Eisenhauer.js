@@ -6,10 +6,6 @@ import RenderItem from "../components/RenderItem.js";
 import CreateNewToDo from "../components/CreateNewToDo.js";
 import Footer from "../components/Footer.js";
 
-/*
-
-*/
-
 const EisenhauerScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
 
@@ -139,10 +135,6 @@ const EisenhauerScreen = ({ navigation }) => {
     />
   );
 
-  /*
-  
-  */
-
   return (
     <View style={styles.container}>
       <View style={styles.containerContent}>
@@ -193,12 +185,13 @@ const EisenhauerScreen = ({ navigation }) => {
     </View>
   );
 };
+
 export default EisenhauerScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: "22%",
   },
   containerContent: {
     justifyContent: "center",

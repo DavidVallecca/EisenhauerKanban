@@ -85,7 +85,9 @@ const CreateNewToDo = ({ addToDo }) => {
   return (
     <View>
       <View>
-        <Button title="New ToDo" onPress={openAddModal} />
+        <TouchableOpacity style={styles.buttonNewToDo} onPress={openAddModal}>
+          <Text style={styles.buttonNewToDoText}>New ToDo</Text>
+        </TouchableOpacity>
       </View>
       <Modal
         animationType="slide"
@@ -111,7 +113,6 @@ const CreateNewToDo = ({ addToDo }) => {
               autoCapitalize="none"
               onChangeText={(text) => setDescription(text)}
             />
-            {/*<Button title="Bild auswählen" onPress={uploadImage} />*/}
             <Text style={styles.headlineText}>Kanban:</Text>
             <Picker
               style={styles.picker}
@@ -212,6 +213,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
+  },
+  buttonNewToDo: {
+    borderWidth: 1,
+    borderRadius: 3,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    backgroundColor: "#d5dbd6",
+  },
+  buttonNewToDoText: {
+    fontSize: 15,
   },
   buttonAdd: {
     paddingHorizontal: 10,

@@ -25,7 +25,10 @@ const RegisterScreen = ({ navigation }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email, password: hash }),
+        body: JSON.stringify({
+          email: email.toLowerCase().trim(),
+          password: hash,
+        }),
       })
         .then((response) => response.json())
         .then((data) => {

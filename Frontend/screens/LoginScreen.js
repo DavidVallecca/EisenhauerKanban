@@ -39,6 +39,7 @@ const LoginScreen = ({ navigation }) => {
         setEmail("");
         setPassword("");
         navigation.navigate("Eisenhauer");
+        //console.log(data);
       })
       .catch((error) => {
         console.error("Fehler beim Anmelden:", error);

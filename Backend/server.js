@@ -43,10 +43,10 @@ app.post("/api/register", async (req, res) => {
       password: hashedPassword,
     });
 
-    return res.json(res2);
+    return res.sendStatus(200);
   } catch (error) {
     console.error(error);
-    res.sendStatus(500); // Internal Server Error
+    return res.sendStatus(500); // Internal Server Error
   }
 });
 

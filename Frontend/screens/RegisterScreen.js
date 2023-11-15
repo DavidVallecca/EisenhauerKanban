@@ -30,10 +30,10 @@ const RegisterScreen = ({ navigation }) => {
           password: hash,
         }),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Registriert mit:", data.email, data.password);
-          navigation.navigate("Login");
+        .then((response) => {
+          if (response.ok) {
+            navigation.navigate("Login");
+          }
         })
         .catch((error) => {
           console.error("Fehler beim Hinzufügen der Person:", error);

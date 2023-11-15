@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginTop: -45,
-    marginBottom: -45,
+    marginBottom: -35,
   },
   headlineText: {
     fontSize: 18,

@@ -88,25 +88,25 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
         </View>
         <View
           style={{
-            flex: 1,
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "white",
             padding: 20,
+            height: "65%",
           }}
         >
           <Image
             source={{
               uri: `data:image/jpeg;base64,${item.image}`,
             }}
-            style={{ height: 200, width: 266 }}
+            style={{ height: 180, width: 240 }}
           />
           <Text style={styles.headlineText}>Description:</Text>
-          <Text>{selectedDescription}</Text>
+          <Text style={styles.descriptionText}>{selectedDescription}</Text>
           <Text style={styles.headlineText}>Category:</Text>
           <View style={styles.pickerContainer}>
             <Picker
-              style={{ width: 200, height: 100 }}
+              style={styles.picker}
               selectedValue={selectedKanbanCategory}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedKanbanCategory(itemValue)
@@ -119,7 +119,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
           </View>
           <View style={styles.pickerContainer}>
             <Picker
-              style={{ width: 200, height: 100 }}
+              style={styles.picker}
               selectedValue={selectedEisenhauerCategory}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedEisenhauerCategory(itemValue)
@@ -148,12 +148,6 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
             onPress={updateCategory}
           >
             <Text style={styles.buttonText}>Update Category</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#dc3545" }]}
-            onPress={closeMoreModal}
-          >
-            <Text style={styles.buttonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -196,16 +190,18 @@ const styles = StyleSheet.create({
     width: "80%",
     alignItems: "center",
   },
+  descriptionText: {
+    fontSize: 18,
+  },
   pickerContainer: {
-    borderColor: "#007bff",
-    borderWidth: 2,
-    borderRadius: 5,
-    marginBottom: 15,
+    marginBottom: 100,
     paddingHorizontal: 10,
   },
   picker: {
-    fontSize: 16,
-    color: "#007bff",
+    height: 100,
+    width: 200,
+    marginTop: -45,
+    marginBottom: -35,
   },
   defaultItem: {
     backgroundColor: "white",

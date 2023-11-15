@@ -28,6 +28,10 @@ const KanbanScreen = ({ navigation }) => {
     navigation.navigate("Eisenhauer");
   };
 
+  const moveToAnalytics = () => {
+    navigation.navigate("Analytics");
+  };
+
   const moveToLogin = () => {
     navigation.navigate("Login");
   };
@@ -162,6 +166,7 @@ const KanbanScreen = ({ navigation }) => {
           switchToKanban={moveToKanban}
           switchToEisenhauer={moveToEisenhauer}
           switchToLogin={moveToLogin}
+          switchToAnalytics={moveToAnalytics}
         />
       </View>
     </View>

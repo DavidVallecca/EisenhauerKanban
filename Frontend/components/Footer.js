@@ -5,6 +5,7 @@ const Footer = ({
   pageProp,
   switchToKanban,
   switchToEisenhauer,
+  switchToAnalytics,
   switchToLogin,
 }) => {
   const handleButtonEisenhauer = () => {
@@ -13,6 +14,10 @@ const Footer = ({
 
   const handleButtonKanban = () => {
     switchToKanban();
+  };
+
+  const handleButtonAnalytics = () => {
+    switchToAnalytics();
   };
 
   const handleButtonLogout = () => {
@@ -53,6 +58,18 @@ const Footer = ({
           <Text style={styles.buttonText}>K</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.buttonSpacing}>
+        <TouchableOpacity
+          style={
+            pageProp === "Analytics"
+              ? styles.buttonSelected
+              : styles.buttonNotSelected
+          }
+          onPress={handleButtonAnalytics}
+        >
+          <Text style={styles.buttonText}>A</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -68,11 +85,11 @@ const styles = StyleSheet.create({
     height: 70,
   },
   buttonSpacing: {
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginTop: 10,
   },
   buttonSelected: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 35,
     borderRadius: 3,
     borderWidth: 1,
     borderColor: "grey",
@@ -87,7 +104,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   buttonNotSelected: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 35,
     borderRadius: 3,
     borderWidth: 1,
     borderColor: "grey",

@@ -1,13 +1,14 @@
 Run: 
 * Backend: 
-    * set up a simulator
     * run "npm start"
 * Frontend: 
-    * run "npm start"
+    * set up a simulator
+    * run "react-native run-ios"/ "react-native run-android"
 
 
 Secourity: 
 * Client:
-
+    * password-hashing with sha256
 * Server:
     * password-hashing with bycript
+* Kommunication: 

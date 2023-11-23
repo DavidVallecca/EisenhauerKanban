@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import Footer from "../components/Footer.js";
 
 const AnalyticsScreen = ({ navigation }) => {
+  const [toDo, setToDo] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetch("http://localhost:3001/api/getAllToDos")
+        .then((response) => response.json())
+        .then((data) => setToDo(data))
+        .catch((error) => {
+          console.error("Fehler beim Abrufen der Daten:", error);
+        });
+    }, [])
+  );
+  const dataDoneCounter = toDo.filter((item) => item.categoryKanban === "Done");
+
   const moveToKanban = () => {
     navigation.navigate("Kanban");
   };
@@ -21,7 +36,9 @@ const AnalyticsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerContent}></View>
+      <View style={styles.containerContent}>
+        <Text>{dataDoneCounter.length}</Text>
+      </View>
       <Footer
         pageProp={"Analytics"}
         switchToKanban={moveToKanban}

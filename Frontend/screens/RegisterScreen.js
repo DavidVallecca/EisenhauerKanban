@@ -5,12 +5,23 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { sha256 } from "react-native-sha256";
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const sanitizeInput = () => {
+    const allowedCharacters = /^[a-zA-Z0-9@!#$%^&*()_+{}\[\]:;<>,.?|\-=\/]+$/;
+
+    if (!allowedCharacters.test(password)) {
+      convertSHA();
+    } else {
+      Alert.alert("Sie verwenden verbotene Zeichen");
+    }
+  };
 
   const convertSHA = () => {
     sha256(password).then((hash) => {
@@ -62,7 +73,7 @@ const RegisterScreen = ({ navigation }) => {
         autoCapitalize="none"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.registerButton} onPress={convertSHA}>
+      <TouchableOpacity style={styles.registerButton} onPress={sanitizeInput}>
         <Text style={styles.buttonText}>Registrieren</Text>
       </TouchableOpacity>
     </View>

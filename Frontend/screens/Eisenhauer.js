@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
 import RenderItem from "../components/RenderItem.js";
 import CreateNewToDo from "../components/CreateNewToDo.js";

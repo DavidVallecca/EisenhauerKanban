@@ -13,17 +13,23 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const sanitizeInput = () => {
-    const allowedCharacters = /^[a-zA-Z0-9@!#$%^&*()_+{}\[\]:;<>,.?|\-=\/]+$/;
+  const validateAndRegister = () => {
+    const isEmailValid = /^[a-zA-Z0-9@.+\-_~]+$/.test(email);
+    const isPasswordValid =
+      /^[a-zA-Z0-9~!@#$%^&*()_\-+=<>?/{}[\]|;:',.]+$/.test(password);
 
-    if (!allowedCharacters.test(password)) {
-      convertSHA();
+    if (isEmailValid && isPasswordValid) {
+      hashPasswordAndRegister();
     } else {
-      Alert.alert("Sie verwenden verbotene Zeichen");
+      if (!isEmailValid) {
+        Alert.alert("Ungültige E-Mail-Adresse");
+      } else {
+        Alert.alert("Ungültiges Passwort");
+      }
     }
   };
 
-  const convertSHA = () => {
+  const hashPasswordAndRegister = () => {
     sha256(password).then((hash) => {
       handleRegister(hash);
     });
@@ -73,7 +79,10 @@ const RegisterScreen = ({ navigation }) => {
         autoCapitalize="none"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.registerButton} onPress={sanitizeInput}>
+      <TouchableOpacity
+        style={styles.registerButton}
+        onPress={validateAndRegister}
+      >
         <Text style={styles.buttonText}>Registrieren</Text>
       </TouchableOpacity>
     </View>

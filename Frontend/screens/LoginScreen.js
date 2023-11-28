@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { sha256 } from "react-native-sha256";
 
@@ -12,7 +13,22 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const convertSHA = () => {
+  const validateAndLogin = () => {
+    const isEmailValid = /^[a-zA-Z0-9@.+\-_~]+$/.test(email);
+    const isPasswordValid =
+      /^[a-zA-Z0-9~!@#$%^&*()_\-+=<>?/{}[\]|;:',.]+$/.test(password);
+
+    if (isEmailValid && isPasswordValid) {
+      hashPasswordAndLogin();
+    } else {
+      if (!isEmailValid) {
+        Alert.alert("Ungültige E-Mail-Adresse");
+      } else {
+        Alert.alert("Ungültiges Passwort");
+      }
+    }
+  };
+  const hashPasswordAndLogin = () => {
     sha256(password).then((hash) => {
       handleLogin(hash);
     });
@@ -73,7 +89,7 @@ const LoginScreen = ({ navigation }) => {
         autoCapitalize="none"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.loginButton} onPress={convertSHA}>
+      <TouchableOpacity style={styles.loginButton} onPress={validateAndLogin}>
         <Text style={styles.buttonText}>Anmelden</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>

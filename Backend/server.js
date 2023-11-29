@@ -34,7 +34,7 @@ app.post("/api/register", async (req, res) => {
     const doc = await userRef.get();
 
     if (doc.exists) {
-      return res.sendStatus(300); // User already registered
+      return res.sendStatus(409); // User already registered
     }
 
     const res2 = await userRef.set({
@@ -42,7 +42,7 @@ app.post("/api/register", async (req, res) => {
       password: hashedPassword,
     });
 
-    return res.sendStatus(200);
+    return res.sendStatus(201); // successfully registered
   } catch (error) {
     console.error(error);
     return res.sendStatus(500); // Internal Server Error
@@ -58,7 +58,7 @@ app.post("/api/users/login", async (req, res) => {
     const doc = await userRef.get();
 
     if (!doc.exists) {
-      return res.sendStatus(400); // Benutzer nicht gefunden
+      return res.sendStatus(400); // Uesr no found
     }
 
     const storedHashedPassword = doc.data().password;
@@ -70,10 +70,10 @@ app.post("/api/users/login", async (req, res) => {
     );
 
     if (!passwordMatch) {
-      return res.sendStatus(401); // Passwort falsch
+      return res.sendStatus(401); // password wrong
     }
     currentUser = email;
-    res.status(200).json(doc.data());
+    res.status(200).json(doc.data()); // successfully logged in
   } catch (error) {
     console.error(error);
     res.sendStatus(500); // Internal Server Error

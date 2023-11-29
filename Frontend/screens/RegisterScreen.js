@@ -58,9 +58,11 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleResponse = (response) => {
-    if (response.status === 200) {
+    if (response.status === 201) {
       navigation.navigate("Login");
-    } else if (response.status === 300) {
+      setEmail("");
+      setPassword("");
+    } else if (response.status === 409) {
       alert("Benutzer existiert bereits. Bitte wählen Sie eine andere E-Mail.");
     } else {
       alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");

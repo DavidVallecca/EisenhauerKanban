@@ -13,13 +13,22 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const validateAndRegister = () => {
+  const validateAndHashAndRegister = async () => {
+    if (!email || !password) {
+      Alert.alert("Bitte füllen Sie alle Felder aus");
+      return;
+    }
     const isEmailValid = /^[a-zA-Z0-9@.+\-_~]+$/.test(email);
     const isPasswordValid =
       /^[a-zA-Z0-9~!@#$%^&*()_\-+=<>?/{}[\]|;:',.]+$/.test(password);
 
     if (isEmailValid && isPasswordValid) {
-      hashPasswordAndRegister();
+      try {
+        const hash = await sha256(password);
+        await handleRegister(hash);
+      } catch (error) {
+        console.error("Fehler beim Hashen des Passworts:", error);
+      }
     } else {
       if (!isEmailValid) {
         Alert.alert("Ungültige E-Mail-Adresse");
@@ -29,15 +38,9 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  const hashPasswordAndRegister = () => {
-    sha256(password).then((hash) => {
-      handleRegister(hash);
-    });
-  };
-
-  const handleRegister = (hash) => {
+  const handleRegister = async (hash) => {
     try {
-      fetch("http://localhost:3001/api/register", {
+      const response = await fetch("http://localhost:3001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,17 +49,21 @@ const RegisterScreen = ({ navigation }) => {
           email: email.toLowerCase().trim(),
           password: hash,
         }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            navigation.navigate("Login");
-          }
-        })
-        .catch((error) => {
-          console.error("Fehler beim Hinzufügen der Person:", error);
-        });
+      });
+      handleResponse(response);
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
+      Alert.alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+    }
+  };
+
+  const handleResponse = (response) => {
+    if (response.status === 200) {
+      navigation.navigate("Login");
+    } else if (response.status === 300) {
+      alert("Benutzer existiert bereits. Bitte wählen Sie eine andere E-Mail.");
+    } else {
+      alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
     }
   };
 
@@ -81,7 +88,7 @@ const RegisterScreen = ({ navigation }) => {
       />
       <TouchableOpacity
         style={styles.registerButton}
-        onPress={validateAndRegister}
+        onPress={validateAndHashAndRegister}
       >
         <Text style={styles.buttonText}>Registrieren</Text>
       </TouchableOpacity>

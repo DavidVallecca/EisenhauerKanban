@@ -28,14 +28,13 @@ app.post("/api/register", async (req, res) => {
   const newUser = req.body;
   const email = newUser.email;
   try {
-    console.log("Register Password after clienthashing: " + newUser.password);
     let hashedPassword = await hashPassword(newUser.password);
 
     const userRef = db.collection("user").doc(String(email));
     const doc = await userRef.get();
 
     if (doc.exists) {
-      return res.sendStatus(300);
+      return res.sendStatus(300); // User already registered
     }
 
     const res2 = await userRef.set({

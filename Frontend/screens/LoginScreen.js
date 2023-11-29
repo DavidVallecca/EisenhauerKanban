@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { sha256 } from "react-native-sha256";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -58,8 +59,11 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const handleResponse = (response) => {
+  const handleResponse = async (response) => {
     if (response.status === 200) {
+      const data = await response.json();
+      const token = data.token;
+      await storeToken(token);
       navigation.navigate("Eisenhauer");
       setEmail("");
       setPassword("");
@@ -71,6 +75,15 @@ const LoginScreen = ({ navigation }) => {
       alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.asdf");
     }
   };
+
+  // Beispiel zum Speichern des Tokens in AsyncStorage
+  async function storeToken(token) {
+    try {
+      await AsyncStorage.setItem("userToken", token);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleRegister = () => {
     navigation.navigate("Register");

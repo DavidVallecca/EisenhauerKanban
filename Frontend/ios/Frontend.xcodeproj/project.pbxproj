@@ -15,6 +15,11 @@
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		EA0D9DA2F9204E9EB90EA8E2 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751D55A764C48378A6DC410 /* noop-file.swift */; };
+		7E35E4B46A68444B8EF5B95A /* adaptive-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8685488AA93F4576834189B0 /* adaptive-icon.png */; };
+		7907A605BCC74386908B65E0 /* favicon.png in Resources */ = {isa = PBXBuildFile; fileRef = EE08156046FD43DDAC8B068A /* favicon.png */; };
+		845CB87DF3E54D69A6121BD6 /* greenHook.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 72E97B1D931C4D0F8170FABC /* greenHook.jpeg */; };
+		695A8A18758546388BB9D351 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B9540892642A49DF90798D51 /* icon.png */; };
+		38D56F9A2CCB484AA3BB30D2 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = B60D012109AE4FEB9790EC86 /* splash.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +38,11 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Frontend/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		8685488AA93F4576834189B0 /* adaptive-icon.png */ = {isa = PBXFileReference; name = "adaptive-icon.png"; path = "../assets/adaptive-icon.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE08156046FD43DDAC8B068A /* favicon.png */ = {isa = PBXFileReference; name = "favicon.png"; path = "../assets/favicon.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		72E97B1D931C4D0F8170FABC /* greenHook.jpeg */ = {isa = PBXFileReference; name = "greenHook.jpeg"; path = "../assets/greenHook.jpeg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B9540892642A49DF90798D51 /* icon.png */ = {isa = PBXFileReference; name = "icon.png"; path = "../assets/icon.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B60D012109AE4FEB9790EC86 /* splash.png */ = {isa = PBXFileReference; name = "splash.png"; path = "../assets/splash.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +98,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
+				3191868C6BD440BB8E6075C5 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -135,6 +146,19 @@
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
+		};
+		3191868C6BD440BB8E6075C5 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				8685488AA93F4576834189B0 /* adaptive-icon.png */,
+				EE08156046FD43DDAC8B068A /* favicon.png */,
+				72E97B1D931C4D0F8170FABC /* greenHook.jpeg */,
+				B9540892642A49DF90798D51 /* icon.png */,
+				B60D012109AE4FEB9790EC86 /* splash.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -201,6 +225,11 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
+				7E35E4B46A68444B8EF5B95A /* adaptive-icon.png in Resources */,
+				7907A605BCC74386908B65E0 /* favicon.png in Resources */,
+				845CB87DF3E54D69A6121BD6 /* greenHook.jpeg in Resources */,
+				695A8A18758546388BB9D351 /* icon.png in Resources */,
+				38D56F9A2CCB484AA3BB30D2 /* splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

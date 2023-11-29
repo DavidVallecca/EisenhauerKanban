@@ -6,6 +6,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { db } = require("./firebase");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+require("dotenv").config();
+
+const jwtSecret = "test";
+crypto.randomBytes(32).toString("hex");
 const PORT = process.env.PORT || 3001;
 
 //lässt undefinierte Properties zu
@@ -22,7 +28,22 @@ app.use(
   })
 );
 
-let currentUser = "";
+function authenticateToken(req, res, next) {
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.sendStatus(401); // Kein Token vorhanden
+  }
+
+  jwt.verify(token, jwtSecret, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.sendStatus(403); // Token ungültig
+    }
+    req.user = user; // Füge den Benutzer aus dem Token zum Request-Objekt hinzu
+    next(); // Führe den nächsten Schritt in der Routenbehandlung aus
+  });
+}
 
 app.post("/api/register", async (req, res) => {
   const newUser = req.body;
@@ -58,7 +79,7 @@ app.post("/api/users/login", async (req, res) => {
     const doc = await userRef.get();
 
     if (!doc.exists) {
-      return res.sendStatus(400); // Uesr no found
+      return res.sendStatus(400); // User not found
     }
 
     const storedHashedPassword = doc.data().password;
@@ -70,10 +91,14 @@ app.post("/api/users/login", async (req, res) => {
     );
 
     if (!passwordMatch) {
-      return res.sendStatus(401); // password wrong
+      return res.sendStatus(401); // Wrong password
     }
-    currentUser = email;
-    res.status(200).json(doc.data()); // successfully logged in
+
+    // JWT generieren
+    const token = jwt.sign({ email }, jwtSecret);
+    return res
+      .status(200)
+      .json({ message: "User Logged in Successfully", token });
   } catch (error) {
     console.error(error);
     res.sendStatus(500); // Internal Server Error
@@ -90,8 +115,10 @@ async function comparePassword(plaintextPassword, hash) {
   return result;
 }
 
-app.get("/api/getAllToDos", async (req, res) => {
-  const collectionRef = db.collection(String(currentUser));
+app.get("/api/getAllToDos", authenticateToken, async (req, res) => {
+  const userEmail = req.user.email; // Benutzer-E-Mail aus dem authentifizierten Token
+
+  const collectionRef = db.collection(String(userEmail));
   const snapshot = await collectionRef.get();
   const todos = [];
 
@@ -113,11 +140,13 @@ app.get("/api/getAllToDos", async (req, res) => {
   res.json(todos);
 });
 
-app.post("/api/addNewToDo", async (req, res) => {
+app.post("/api/addNewToDo", authenticateToken, async (req, res) => {
+  const email = req.user.email;
+
   const newToDo = req.body;
   const toDoId = newToDo.id;
 
-  const collectionRef = db.collection(String(currentUser)).doc(String(toDoId));
+  const collectionRef = db.collection(String(email)).doc(String(toDoId));
   const res2 = await collectionRef.set({
     name: newToDo.name,
     categoryKanban: newToDo.categoryKanban,
@@ -130,12 +159,14 @@ app.post("/api/addNewToDo", async (req, res) => {
   res.json(newToDo);
 });
 
-app.put("/api/updateCategory", async (req, res) => {
+app.put("/api/updateCategory", authenticateToken, async (req, res) => {
+  const email = req.user.email;
+
   const toDoId = req.body.id;
   const updatedKanban = req.body.categoryKanban;
   const updateEisenhauer = req.body.categoryEisenhauer;
 
-  const toDoRef = db.collection(String(currentUser)).doc(String(toDoId));
+  const toDoRef = db.collection(String(email)).doc(String(toDoId));
   const res2 = await toDoRef.set(
     {
       categoryKanban: updatedKanban,
@@ -146,9 +177,11 @@ app.put("/api/updateCategory", async (req, res) => {
   res.json({ message: "Category updated successfully" });
 });
 
-app.delete("/api/delete/:id", async (req, res) => {
+app.delete("/api/delete/:id", authenticateToken, async (req, res) => {
+  const email = req.user.email;
+
   const toDoId = req.params.id;
-  const toDoRef = db.collection(String(currentUser)).doc(String(toDoId));
+  const toDoRef = db.collection(String(email)).doc(String(toDoId));
 
   try {
     await toDoRef.delete();

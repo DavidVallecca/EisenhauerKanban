@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { StyleSheet, Text, View, FlatList } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import RenderItem from "../components/RenderItem.js";
 import CreateNewToDo from "../components/CreateNewToDo.js";
@@ -11,12 +12,38 @@ const EisenhauerScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetch("http://localhost:3001/api/getAllToDos")
-        .then((response) => response.json())
-        .then((data) => setToDo(data))
-        .catch((error) => {
+      async function fetchToDos() {
+        try {
+          // Abrufen des Tokens aus dem AsyncStorage
+          const userToken = await AsyncStorage.getItem("userToken");
+
+          if (userToken) {
+            const response = await fetch(
+              "http://localhost:3001/api/getAllToDos",
+              {
+                headers: {
+                  Authorization: `${userToken}`, // Verwenden des Tokens im Authorization-Header
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (response.ok) {
+              const data = await response.json();
+              setToDo(data);
+            } else {
+              console.error("Fehler beim Abrufen der Daten:", response.status);
+            }
+          } else {
+            console.error("Kein Token gefunden.");
+            // Handle wenn kein Token vorhanden ist, z.B. zurück zum Login-Bildschirm
+          }
+        } catch (error) {
           console.error("Fehler beim Abrufen der Daten:", error);
-        });
+        }
+      }
+
+      fetchToDos();
     }, [])
   );
 
@@ -52,7 +79,7 @@ const EisenhauerScreen = ({ navigation }) => {
     (item) => item.categoryEisenhauer === "notImportantNotCurrent"
   );
 
-  const addToDo = (
+  const addToDo = async (
     newName,
     selectedKanbanCategory,
     selectedEisenhauerCategory,
@@ -60,74 +87,117 @@ const EisenhauerScreen = ({ navigation }) => {
     image,
     uuid
   ) => {
-    fetch("http://localhost:3001/api/addNewToDo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newName,
-        categoryKanban: selectedKanbanCategory,
-        categoryEisenhauer: selectedEisenhauerCategory,
-        description: description,
-        image: image,
-        id: uuid,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => setToDo([...toDo, data]))
-      .catch((error) => {
-        console.error("Fehler beim Hinzufügen der Person:", error);
-      });
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      if (userToken) {
+        const response = await fetch("http://localhost:3001/api/addNewToDo", {
+          method: "POST",
+          headers: {
+            Authorization: `${userToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: newName,
+            categoryKanban: selectedKanbanCategory,
+            categoryEisenhauer: selectedEisenhauerCategory,
+            description: description,
+            image: image,
+            id: uuid,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setToDo([...toDo, data]);
+        } else {
+          throw new Error("Fehler beim Hinzufügen der Aufgabe");
+        }
+      } else {
+        throw new Error("Kein Token gefunden");
+      }
+    } catch (error) {
+      console.error("Fehler beim Hinzufügen der Aufgabe:", error);
+    }
   };
 
-  const deleteToDo = (selectedToDo) => {
-    if (selectedToDo) {
-      fetch(`http://localhost:3001/api/delete/${selectedToDo.id}`, {
-        method: "DELETE",
-      })
-        .then((response) => response.json())
-        .then(() => {
+  const deleteToDo = async (selectedToDo) => {
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      if (selectedToDo && userToken) {
+        const response = await fetch(
+          `http://localhost:3001/api/delete/${selectedToDo.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `${userToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
           const updatedPeople = toDo.filter(
             (person) => person.id !== selectedToDo.id
           );
           setToDo(updatedPeople);
-        })
-        .catch((error) => {
-          console.error("Fehler beim Löschen des ToDos:", error);
-        });
+        } else {
+          throw new Error("Fehler beim Löschen des ToDos");
+        }
+      } else {
+        throw new Error(
+          "Ungültiges ausgewähltes To-Do oder kein Token gefunden"
+        );
+      }
+    } catch (error) {
+      console.error("Fehler beim Löschen des ToDos:", error);
     }
   };
 
-  const updateCategory = (selectedToDo, kanbanCategory, eisenhauerCategory) => {
-    if (selectedToDo) {
-      fetch(`http://localhost:3001/api/updateCategory`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          categoryKanban: kanbanCategory,
-          categoryEisenhauer: eisenhauerCategory,
-          id: selectedToDo.id,
-        }),
-      })
-        .then((response) => response.json())
-        .then(() => {
-          const updatedToDos = toDo.map((toDo) =>
-            toDo.id === selectedToDo.id
+  const updateCategory = async (
+    selectedToDo,
+    kanbanCategory,
+    eisenhauerCategory
+  ) => {
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      if (selectedToDo && userToken) {
+        const response = await fetch(
+          `http://localhost:3001/api/updateCategory`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `${userToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              categoryKanban: kanbanCategory,
+              categoryEisenhauer: eisenhauerCategory,
+              id: selectedToDo.id,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          const updatedToDos = toDo.map((toDoItem) =>
+            toDoItem.id === selectedToDo.id
               ? {
-                  ...toDo,
+                  ...toDoItem,
                   categoryKanban: kanbanCategory,
                   categoryEisenhauer: eisenhauerCategory,
                 }
-              : toDo
+              : toDoItem
           );
           setToDo(updatedToDos);
-        })
-        .catch((error) => {
-          console.error("Fehler beim Aktualisieren der Kategorie:", error);
-        });
+        } else {
+          throw new Error("Fehler beim Aktualisieren der Kategorie");
+        }
+      } else {
+        throw new Error(
+          "Ungültiges ausgewähltes To-Do oder kein Token gefunden"
+        );
+      }
+    } catch (error) {
+      console.error("Fehler beim Aktualisieren der Kategorie:", error);
     }
   };
 

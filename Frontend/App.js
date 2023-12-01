@@ -6,13 +6,19 @@ import Register from "./screens/RegisterScreen.js";
 import Eisenhauer from "./screens/Eisenhauer.js";
 import Kanban from "./screens/Kanban.js";
 import Analytics from "./screens/Analytics.js";
+import AuthLoading from "./screens/AuthLoadingScreen.js";
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="AuthLoading">
+        <Stack.Screen
+          name="AuthLoading"
+          component={AuthLoading}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}

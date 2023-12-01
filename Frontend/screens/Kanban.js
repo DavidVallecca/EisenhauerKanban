@@ -5,18 +5,19 @@ import { useFocusEffect } from "@react-navigation/native";
 import RenderItem from "../components/RenderItem.js";
 import CreateNewToDo from "../components/CreateNewToDo.js";
 import Footer from "../components/Footer.js";
+import {
+  fetchToDos,
+  addToDo,
+  deleteToDo,
+  updateCategory,
+} from "../components/ToDoFunctions.js";
 
 const KanbanScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
 
   useFocusEffect(
     React.useCallback(() => {
-      fetch("http://localhost:3001/api/getAllToDos")
-        .then((response) => response.json())
-        .then((data) => setToDo(data))
-        .catch((error) => {
-          console.error("Fehler beim Abrufen der Daten:", error);
-        });
+      fetchToDos(setToDo);
     }, [])
   );
 
@@ -42,7 +43,7 @@ const KanbanScreen = ({ navigation }) => {
   );
   const dataDone = toDo.filter((item) => item.categoryKanban === "Done");
 
-  const addToDo = (
+  const handleAddToDo = async (
     newName,
     selectedKanbanCategory,
     selectedEisenhauerCategory,
@@ -50,82 +51,41 @@ const KanbanScreen = ({ navigation }) => {
     image,
     uuid
   ) => {
-    fetch("http://localhost:3001/api/addNewToDo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newName,
-        categoryKanban: selectedKanbanCategory,
-        categoryEisenhauer: selectedEisenhauerCategory,
-        description: description,
-        image: image,
-        id: uuid,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => setToDo([...toDo, data]))
-      .catch((error) => {
-        console.error("Fehler beim Hinzufügen der Person:", error);
-      });
+    await addToDo(
+      newName,
+      selectedKanbanCategory,
+      selectedEisenhauerCategory,
+      description,
+      image,
+      uuid,
+      toDo,
+      setToDo
+    );
   };
 
-  const deleteToDo = (selectedToDo) => {
-    if (selectedToDo) {
-      fetch(`http://localhost:3001/api/delete/${selectedToDo.id}`, {
-        method: "DELETE",
-      })
-        .then((response) => response.json())
-        .then(() => {
-          const updatedPeople = toDo.filter(
-            (person) => person.id !== selectedToDo.id
-          );
-          setToDo(updatedPeople);
-        })
-        .catch((error) => {
-          console.error("Fehler beim Löschen des ToDos:", error);
-        });
-    }
+  const handleDeleteToDo = async (selectedToDo) => {
+    await deleteToDo(selectedToDo, toDo, setToDo);
   };
 
-  const updateCategory = (selectedToDo, kanbanCategory, eisenhauerCategory) => {
-    if (selectedToDo) {
-      fetch(`http://localhost:3001/api/updateCategory`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          categoryKanban: kanbanCategory,
-          categoryEisenhauer: eisenhauerCategory,
-          id: selectedToDo.id,
-        }),
-      })
-        .then((response) => response.json())
-        .then(() => {
-          const updatedToDos = toDo.map((toDo) =>
-            toDo.id === selectedToDo.id
-              ? {
-                  ...toDo,
-                  categoryKanban: kanbanCategory,
-                  categoryEisenhauer: eisenhauerCategory,
-                }
-              : toDo
-          );
-          setToDo(updatedToDos);
-        })
-        .catch((error) => {
-          console.error("Fehler beim Aktualisieren der Kategorie:", error);
-        });
-    }
+  const handleUpdateCategory = async (
+    selectedToDo,
+    kanbanCategory,
+    eisenhauerCategory
+  ) => {
+    await updateCategory(
+      selectedToDo,
+      kanbanCategory,
+      eisenhauerCategory,
+      toDo,
+      setToDo
+    );
   };
 
   const renderItem = ({ item }) => (
     <RenderItem
       item={item}
-      onDelete={deleteToDo}
-      onCategoryUpdate={updateCategory}
+      onDelete={handleDeleteToDo}
+      onCategoryUpdate={handleUpdateCategory}
     />
   );
 
@@ -133,7 +93,7 @@ const KanbanScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.containerContent}>
         <View>
-          <CreateNewToDo addToDo={addToDo} />
+          <CreateNewToDo addToDo={handleAddToDo} />
         </View>
         <Text style={styles.headlineText}>ToDo</Text>
         <View style={styles.roundedBorderView}>

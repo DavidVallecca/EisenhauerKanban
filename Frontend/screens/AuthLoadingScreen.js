@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import base64 from "react-native-base64";
 
 const AuthLoadingScreen = ({ navigation }) => {
   useEffect(() => {
@@ -11,15 +12,23 @@ const AuthLoadingScreen = ({ navigation }) => {
     try {
       const userToken = await AsyncStorage.getItem("userToken");
       if (userToken) {
-        // Wenn ein Token vorhanden ist, navigiere zur Hauptseite (Eisenhauer o.ä.)
-        navigation.navigate("Eisenhauer");
+        // decode Token to check Expiration date
+        const expValue = base64
+          .decode(userToken.split(".")[1])
+          .match(/"exp":(\d+),?/)[1];
+
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (expValue < currentTime) {
+          navigation.navigate("Login");
+        } else {
+          navigation.navigate("Eisenhauer");
+        }
       } else {
-        // Wenn kein Token vorhanden ist, navigiere zur Anmeldeseite
         navigation.navigate("Login");
       }
     } catch (error) {
       console.error(error);
-      // Im Falle eines Fehlers ebenfalls zur Anmeldeseite navigieren
       navigation.navigate("Login");
     }
   };

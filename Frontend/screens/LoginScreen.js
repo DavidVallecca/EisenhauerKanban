@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert("Bitte füllen Sie alle Felder aus");
       return;
     }
-    const isEmailValid = /^[a-zA-Z0-9@.+\-_~]+$/.test(email);
+    const isEmailValid = /^[a-zA-Z0-9@.+\-_~]+$/.test(email.trim());
     const isPasswordValid =
       /^[a-zA-Z0-9~!@#$%^&*()_\-+=<>?/{}[\]|;:',.]+$/.test(password);
 

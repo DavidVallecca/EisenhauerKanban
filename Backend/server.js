@@ -121,19 +121,18 @@ app.get("/api/getAllToDos", authenticateToken, async (req, res) => {
   const collectionRef = db.collection(String(userEmail));
   const snapshot = await collectionRef.get();
   const todos = [];
-
-  snapshot.forEach((doc) => {
-    todos.push({
-      name: doc.data().name,
-      categoryKanban: doc.data().categoryKanban,
-      categoryEisenhauer: doc.data().categoryEisenhauer,
-      description: doc.data().description,
-      image: doc.data().image,
-      id: doc.data().id,
+  try {
+    snapshot.forEach((doc) => {
+      todos.push({
+        name: doc.data().name,
+        categoryKanban: doc.data().categoryKanban,
+        categoryEisenhauer: doc.data().categoryEisenhauer,
+        description: doc.data().description,
+        image: doc.data().image,
+        id: doc.data().id,
+      });
     });
-  });
-
-  if (todos.length === 0) {
+  } catch (e) {
     res.status(404);
   }
 

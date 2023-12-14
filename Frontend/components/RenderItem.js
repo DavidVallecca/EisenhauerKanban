@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Animated,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
+  const translation = useRef(new Animated.Value(200)).current;
+
   const [modalMoreVisible, setModalMoreVisible] = useState(false);
   const [selectedToDo, setSelectedToDo] = useState(null);
   const [selectedDescription, setSelectedDescription] = useState("");
@@ -20,6 +23,14 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
   const [selectedEisenhauerCategory, setSelectedEisenhauerCategory] = useState(
     item.eisenhauerCategory
   );
+
+  useEffect(() => {
+    Animated.timing(translation, {
+      toValue: 0,
+      duration: 50,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   const openMoreModal = (ToDo) => {
     setSelectedToDo(ToDo);
@@ -50,7 +61,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
   };
 
   return (
-    <View
+    <Animated.View
       style={[
         styles.itemContainer,
         item.categoryKanban === "ToDo"
@@ -60,6 +71,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
           : item.categoryKanban === "Done"
           ? styles.greenItem
           : styles.defaultItem,
+        { transform: [{ translateX: translation }] },
       ]}
     >
       <Text style={styles.itemText}>{item.name}</Text>
@@ -152,7 +164,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
         </View>
       </Modal>
       <Button title="Weiteres" onPress={() => openMoreModal(item)} />
-    </View>
+    </Animated.View>
   );
 };
 

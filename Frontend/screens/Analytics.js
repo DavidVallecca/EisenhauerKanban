@@ -2,20 +2,17 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import Footer from "../components/Footer.js";
+import { fetchToDos } from "../components/ToDoFunctions.js";
 
 const AnalyticsScreen = ({ navigation }) => {
   const [toDo, setToDo] = useState([]);
 
   useFocusEffect(
     React.useCallback(() => {
-      fetch("http://localhost:3001/api/getAllToDos")
-        .then((response) => response.json())
-        .then((data) => setToDo(data))
-        .catch((error) => {
-          console.error("Fehler beim Abrufen der Daten:", error);
-        });
+      fetchToDos(setToDo);
     }, [])
   );
+
   const dataDoneCounter = toDo.filter((item) => item.categoryKanban === "Done");
 
   const moveToKanban = () => {

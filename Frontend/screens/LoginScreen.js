@@ -64,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
       const data = await response.json();
       const token = data.token;
       await storeToken(token);
-      navigation.navigate("Eisenhauer");
+      navigation.navigate("Analytics");
       setEmail("");
       setPassword("");
     } else if (response.status === 401) {

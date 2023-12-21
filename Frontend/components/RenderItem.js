@@ -107,12 +107,16 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
             height: "65%",
           }}
         >
-          <Image
-            source={{
-              uri: `data:image/jpeg;base64,${item.image}`,
-            }}
-            style={{ height: 180, width: 240 }}
-          />
+          {item.image === "" ? (
+            <View></View>
+          ) : (
+            <Image
+              source={{
+                uri: `data:image/jpeg;base64,${item.image}`,
+              }}
+              style={{ height: 180, width: 240 }}
+            />
+          )}
           <Text style={styles.headlineText}>Description:</Text>
           <Text style={styles.descriptionText}>{selectedDescription}</Text>
           <Text style={styles.headlineText}>Category:</Text>
@@ -155,10 +159,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
               />
             </Picker>
           </View>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#007bff" }]}
-            onPress={updateCategory}
-          >
+          <TouchableOpacity style={styles.button} onPress={updateCategory}>
             <Text style={styles.buttonText}>Update Category</Text>
           </TouchableOpacity>
         </View>
@@ -237,6 +238,7 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: 10,
     padding: 10,
+    marginTop: 20,
     borderRadius: 5,
     backgroundColor: "#007bff",
   },

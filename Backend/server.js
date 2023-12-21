@@ -129,6 +129,7 @@ app.get("/api/getAllToDos", authenticateToken, async (req, res) => {
         categoryEisenhauer: doc.data().categoryEisenhauer,
         description: doc.data().description,
         image: doc.data().image,
+        date: doc.data().date,
         id: doc.data().id,
       });
     });
@@ -152,6 +153,7 @@ app.post("/api/addNewToDo", authenticateToken, async (req, res) => {
     categoryEisenhauer: newToDo.categoryEisenhauer,
     description: newToDo.description,
     image: newToDo.image,
+    date: newToDo.date,
     id: newToDo.id,
   });
 

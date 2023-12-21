@@ -33,6 +33,7 @@ export const addToDo = async (
   selectedEisenhauerCategory,
   description,
   image,
+  date,
   uuid,
   toDo,
   setToDo
@@ -52,6 +53,7 @@ export const addToDo = async (
           categoryEisenhauer: selectedEisenhauerCategory,
           description: description,
           image: image,
+          date: date,
           id: uuid,
         }),
       });

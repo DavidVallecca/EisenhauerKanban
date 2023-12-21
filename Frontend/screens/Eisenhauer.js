@@ -59,6 +59,7 @@ const EisenhauerScreen = ({ navigation }) => {
     selectedEisenhauerCategory,
     description,
     image,
+    date,
     uuid
   ) => {
     await addToDo(
@@ -67,6 +68,7 @@ const EisenhauerScreen = ({ navigation }) => {
       selectedEisenhauerCategory,
       description,
       image,
+      date,
       uuid,
       toDo,
       setToDo

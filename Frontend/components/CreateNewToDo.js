@@ -8,8 +8,10 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Button,
 } from "react-native";
 import uuid from "react-native-uuid";
+import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -21,6 +23,8 @@ const CreateNewToDo = ({ addToDo }) => {
   const [newName, setNewName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setIamge] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   const [modalNewVisible, setModalNewVisible] = useState(false);
 
   const openAddModal = () => {
@@ -43,6 +47,7 @@ const CreateNewToDo = ({ addToDo }) => {
       selectedEisenhauerCategory,
       description,
       image,
+      date,
       uuid.v4()
     );
     closeAddModal();
@@ -117,6 +122,19 @@ const CreateNewToDo = ({ addToDo }) => {
               placeholder="Enter description"
               autoCapitalize="none"
               onChangeText={(text) => setDescription(text)}
+            />
+            <Button title="Open" onPress={() => setOpen(true)} />
+            <DatePicker
+              modal
+              open={open}
+              date={date}
+              onConfirm={(date) => {
+                setOpen(false);
+                setDate(date);
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
             />
             <Text style={styles.headlineText}>Kanban:</Text>
             <Picker

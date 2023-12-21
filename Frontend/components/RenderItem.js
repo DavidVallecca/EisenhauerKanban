@@ -117,6 +117,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
               style={{ height: 180, width: 240 }}
             />
           )}
+          <Text>{item.date}</Text>
           <Text style={styles.headlineText}>Description:</Text>
           <Text style={styles.descriptionText}>{selectedDescription}</Text>
           <Text style={styles.headlineText}>Category:</Text>

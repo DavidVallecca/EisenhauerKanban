@@ -5,7 +5,7 @@ export async function fetchToDos(setToDo) {
     const userToken = await AsyncStorage.getItem("userToken");
 
     if (userToken) {
-      const response = await fetch("http://localhost:3001/api/getAllToDos", {
+      const response = await fetch("http://10.0.2.2:3001/api/getAllToDos", {
         headers: {
           Authorization: `${userToken}`,
           "Content-Type": "application/json",
@@ -20,7 +20,6 @@ export async function fetchToDos(setToDo) {
       }
     } else {
       console.error("Kein Token gefunden.");
-      // Handle wenn kein Token vorhanden ist, z.B. zurück zum Login-Bildschirm
     }
   } catch (error) {
     console.error("Fehler beim Abrufen der Daten:", error);
@@ -41,7 +40,7 @@ export const addToDo = async (
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     if (userToken) {
-      const response = await fetch("http://localhost:3001/api/addNewToDo", {
+      const response = await fetch("http://10.0.2.2:3001/api/addNewToDo", {
         method: "POST",
         headers: {
           Authorization: `${userToken}`,
@@ -77,7 +76,7 @@ export const deleteToDo = async (selectedToDo, toDo, setToDo) => {
     const userToken = await AsyncStorage.getItem("userToken");
     if (selectedToDo && userToken) {
       const response = await fetch(
-        `http://localhost:3001/api/delete/${selectedToDo.id}`,
+        `http://10.0.2.2:3001/api/delete/${selectedToDo.id}`,
         {
           method: "DELETE",
           headers: {
@@ -113,7 +112,7 @@ export const updateCategory = async (
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     if (selectedToDo && userToken) {
-      const response = await fetch(`http://localhost:3001/api/updateCategory`, {
+      const response = await fetch(`http://10.0.2.2:3001/api/updateCategory`, {
         method: "PUT",
         headers: {
           Authorization: `${userToken}`,

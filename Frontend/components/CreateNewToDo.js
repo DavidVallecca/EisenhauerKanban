@@ -123,7 +123,7 @@ const CreateNewToDo = ({ addToDo }) => {
               autoCapitalize="none"
               onChangeText={(text) => setDescription(text)}
             />
-            <Button title="Open" onPress={() => setOpen(true)} />
+            {/* <Button title="Open" onPress={() => setOpen(true)} />
             <DatePicker
               modal
               open={open}
@@ -135,7 +135,7 @@ const CreateNewToDo = ({ addToDo }) => {
               onCancel={() => {
                 setOpen(false);
               }}
-            />
+            /> */}
             <Text style={styles.headlineText}>Kanban:</Text>
             <Picker
               style={styles.picker}

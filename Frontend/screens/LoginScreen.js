@@ -25,8 +25,9 @@ const LoginScreen = ({ navigation }) => {
 
     if (isEmailValid && isPasswordValid) {
       try {
-        const hash = await sha256(password);
-        await handleLogin(hash);
+        //const hash = await sha256(password);
+        //await handleLogin(hash);
+        await handleLogin(password);
       } catch (error) {
         console.error("Fehler beim Hashen des Passworts:", error);
       }
@@ -41,7 +42,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async (hash) => {
     try {
-      const response = await fetch("http://localhost:3001/api/users/login", {
+      const response = await fetch("http://10.0.2.2:3001/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

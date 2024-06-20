@@ -24,8 +24,9 @@ const RegisterScreen = ({ navigation }) => {
 
     if (isEmailValid && isPasswordValid) {
       try {
-        const hash = await sha256(password);
-        await handleRegister(hash);
+        //const hash = await sha256(password);
+        //await handleRegister(hash);
+        await handleRegister(password);
       } catch (error) {
         console.error("Fehler beim Hashen des Passworts:", error);
       }
@@ -40,7 +41,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async (hash) => {
     try {
-      const response = await fetch("http://localhost:3001/api/register", {
+      const response = await fetch("http://10.0.2.2:3001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

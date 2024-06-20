@@ -58,18 +58,6 @@ const Footer = ({
           <Text style={styles.buttonText}>K</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonSpacing}>
-        <TouchableOpacity
-          style={
-            pageProp === "Analytics"
-              ? styles.buttonSelected
-              : styles.buttonNotSelected
-          }
-          onPress={handleButtonAnalytics}
-        >
-          <Text style={styles.buttonText}>A</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -82,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     backgroundColor: "black",
-    height: 70,
+    height: 55,
   },
   buttonSpacing: {
     marginHorizontal: 10,

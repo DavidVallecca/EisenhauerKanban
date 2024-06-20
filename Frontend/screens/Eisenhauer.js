@@ -158,7 +158,7 @@ export default EisenhauerScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: "22%",
+    paddingTop: "12%",
   },
   containerContent: {
     justifyContent: "center",
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: 350,
-    height: 150,
+    height: 130,
   },
   headlineText: {
     fontSize: 20,

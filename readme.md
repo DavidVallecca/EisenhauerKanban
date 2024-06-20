@@ -1,16 +1,17 @@
-Run:
+Run on Mac:
 
-- Backend:
-  - run "npm start"
-- Frontend:
-  - set up a simulator
-  - run "react-native run-ios"/ "react-native run-android"
+open Terminal in root directory
 
-Secourity:
+Backend:
 
-- Client:
-  - password-hashing with sha256
-    (No further security; only implemented for test purposes)
-- Server:
-  - password-hashing with bycript
-- Kommunication:
+- run: cd Backend
+- run: npm install
+- run: nodemon server.js
+
+run: cd ..
+
+Frontend:
+
+- run: cd Frontend
+- run: npm install
+- run: react-native run-ios

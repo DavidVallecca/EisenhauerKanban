@@ -94,8 +94,12 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
               Are you sure you want to delete{" "}
               {selectedToDo ? selectedToDo.name : ""}?
             </Text>
-            <Button title="Delete" onPress={deleteToDo} />
-            <Button title="Cancel" onPress={closeMoreModal} />
+            <TouchableOpacity style={styles.buttonTop} onPress={deleteToDo}>
+              <Text style={styles.buttonText}>Delete</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonTop} onPress={closeMoreModal}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View
@@ -114,10 +118,9 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
               source={{
                 uri: `data:image/jpeg;base64,${item.image}`,
               }}
-              style={{ height: 180, width: 240 }}
+              style={{ height: 180, width: 240, marginBottom: 20 }}
             />
           )}
-          <Text>{item.date}</Text>
           <Text style={styles.headlineText}>Description:</Text>
           <Text style={styles.descriptionText}>{selectedDescription}</Text>
           <Text style={styles.headlineText}>Category:</Text>
@@ -206,16 +209,17 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: 18,
+    marginBottom: 15,
   },
   pickerContainer: {
-    marginBottom: 100,
+    marginBottom: 30,
     paddingHorizontal: 10,
   },
   picker: {
     height: 100,
     width: 200,
-    marginTop: -45,
-    marginBottom: -35,
+    marginTop: -25,
+    marginBottom: -60,
   },
   defaultItem: {
     backgroundColor: "white",
@@ -240,6 +244,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 10,
     marginTop: 20,
+    borderRadius: 5,
+    backgroundColor: "#007bff",
+  },
+  buttonTop: {
+    marginHorizontal: 5,
+    padding: 5,
+    marginTop: 7,
     borderRadius: 5,
     backgroundColor: "#007bff",
   },

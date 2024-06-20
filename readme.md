@@ -1,22 +1,32 @@
 # EisenhauerKanban
 
-## Run on Mac:
-
 open Terminal in root directory
 
-### Backend:
+## Backend:
 
 - run: cd Backend
 - run: npm install
-- run: nodemon server.js
+- run: npm start
 
 run: cd ..
 
-### Frontend:
+## Frontend:
+
+### Android (Windows and Mac (easyer Version))
+
+- install Android Studio (https://developer.android.com/studio?hl=de)
+- open Android Studie => more Actions => Virtual Device Manager => run an Android Device
+- run: cd Frontend
+- run: npm install
+- run: npx expo start
+- click on "a" for Android
+
+### iOS (only for Mac)
 
 - install xcode
 - install iOS 17.5 in xcode
-- run simulator with iOS 17.5
+- open simulator with iOS 17.5
 - run: cd Frontend
 - run: npm install
-- run: react-native run-ios
+- run: npx expo start
+- click on "i" for iOS

@@ -5,7 +5,6 @@ import Login from "./screens/LoginScreen.js";
 import Register from "./screens/RegisterScreen.js";
 import Eisenhauer from "./screens/Eisenhauer.js";
 import Kanban from "./screens/Kanban.js";
-import Analytics from "./screens/Analytics.js";
 import AuthLoading from "./screens/AuthLoadingScreen.js";
 
 const Stack = createStackNavigator();
@@ -37,11 +36,6 @@ const App = () => {
         <Stack.Screen
           name="Kanban"
           component={Kanban}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Analytics"
-          component={Analytics}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -22,7 +22,7 @@ const AuthLoadingScreen = ({ navigation }) => {
         if (expValue < currentTime) {
           navigation.navigate("Login");
         } else {
-          navigation.navigate("Analytics");
+          navigation.navigate("Eisenhauer");
         }
       } else {
         navigation.navigate("Login");

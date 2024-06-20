@@ -1,10 +1,10 @@
-#EisenhauerKanban
+# EisenhauerKanban
 
-##Run on Mac:
+## Run on Mac:
 
 open Terminal in root directory
 
-###Backend:
+### Backend:
 
 - run: cd Backend
 - run: npm install
@@ -12,7 +12,7 @@ open Terminal in root directory
 
 run: cd ..
 
-###Frontend:
+### Frontend:
 
 - run: cd Frontend
 - run: npm install

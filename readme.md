@@ -12,10 +12,10 @@ run: cd ..
 
 ## Frontend:
 
-### Android (Windows and Mac (easyer Version))
+### Android (Windows and Mac (Recommended version))
 
 - install Android Studio (https://developer.android.com/studio?hl=de)
-- open Android Studie => more Actions => Virtual Device Manager => run an Android Device
+- open Android Studie => more Actions => Virtual Device Manager => run an Android Device (The easiest and best way is to use the preset device (Pixel 3a))
 - run: cd Frontend
 - run: npm install
 - run: npx expo start

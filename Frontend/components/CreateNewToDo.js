@@ -1,4 +1,4 @@
-import React, { useState, useId } from "react";
+import React, { useState, useId, ScrollView } from "react";
 import {
   Text,
   View,
@@ -123,19 +123,6 @@ const CreateNewToDo = ({ addToDo }) => {
               autoCapitalize="none"
               onChangeText={(text) => setDescription(text)}
             />
-            {/* <Button title="Open" onPress={() => setOpen(true)} />
-            <DatePicker
-              modal
-              open={open}
-              date={date}
-              onConfirm={(date) => {
-                setOpen(false);
-                setDate(date);
-              }}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            /> */}
             <Text style={styles.headlineText}>Kanban:</Text>
             <Picker
               style={styles.picker}
@@ -206,7 +193,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: "80%",
-    height: "70%",
+    height: "75%",
     backgroundColor: "white",
     borderRadius: 20,
     alignItems: "center",
@@ -220,16 +207,17 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     paddingHorizontal: 30,
+    marginBottom: 10,
     borderRadius: 5,
   },
   picker: {
     width: 200,
     height: 200,
-    marginTop: -45,
-    marginBottom: -35,
+    marginTop: -80,
+    marginBottom: -60,
   },
   headlineText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "condensedBold",
     fontFamily: "Helvetica Neue",
     paddingTop: 5,

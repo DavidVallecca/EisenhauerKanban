@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { sha256 } from "react-native-sha256";
+import { ipAdress } from "@env";
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -41,7 +41,8 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async (hash) => {
     try {
-      const response = await fetch("http://10.0.2.2:3001/api/register", {
+      const url = `http://${ipAdress}:3001/api/register`;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

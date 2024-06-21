@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   Button,
+  Platform,
 } from "react-native";
 import uuid from "react-native-uuid";
 import DatePicker from "react-native-date-picker";
@@ -214,12 +215,21 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginTop: -80,
-    marginBottom: -60,
+    marginBottom: -35,
+    ...Platform.select({
+      ios: {
+        marginTop: -60,
+        marginBottom: -25,
+      },
+      android: {
+        marginTop: -70,
+        marginBottom: -60,
+      },
+    }),
   },
   headlineText: {
     fontSize: 20,
     fontWeight: "condensedBold",
-    fontFamily: "Helvetica Neue",
     paddingTop: 5,
     marginTop: 8,
     marginBottom: 3,

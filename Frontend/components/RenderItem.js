@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
   Animated,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
@@ -118,7 +119,7 @@ const RenderItem = ({ item, onDelete, onCategoryUpdate }) => {
               source={{
                 uri: `data:image/jpeg;base64,${item.image}`,
               }}
-              style={{ height: 180, width: 240, marginBottom: 20 }}
+              style={styles.image}
             />
           )}
           <Text style={styles.headlineText}>Description:</Text>
@@ -218,8 +219,16 @@ const styles = StyleSheet.create({
   picker: {
     height: 100,
     width: 200,
-    marginTop: -25,
-    marginBottom: -60,
+    ...Platform.select({
+      ios: {
+        marginTop: -55,
+        marginBottom: 40,
+      },
+      android: {
+        marginTop: -25,
+        marginBottom: -60,
+      },
+    }),
   },
   defaultItem: {
     backgroundColor: "white",
@@ -257,5 +266,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
+  },
+  image: {
+    marginBottom: 20,
+    ...Platform.select({
+      ios: {
+        height: 120,
+        width: 160,
+      },
+      android: {
+        height: 180,
+        width: 240,
+      },
+    }),
   },
 });

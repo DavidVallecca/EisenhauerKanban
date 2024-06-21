@@ -1,11 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ipAdress } from "@env";
 
 export async function fetchToDos(setToDo) {
   try {
     const userToken = await AsyncStorage.getItem("userToken");
 
     if (userToken) {
-      const response = await fetch("http://10.0.2.2:3001/api/getAllToDos", {
+      const url = `http://${ipAdress}:3001/api/getAllToDos`;
+      const response = await fetch(url, {
         headers: {
           Authorization: `${userToken}`,
           "Content-Type": "application/json",
@@ -40,7 +42,8 @@ export const addToDo = async (
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     if (userToken) {
-      const response = await fetch("http://10.0.2.2:3001/api/addNewToDo", {
+      const url = `http://${ipAdress}:3001/api/addNewToDo`;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           Authorization: `${userToken}`,
@@ -75,16 +78,14 @@ export const deleteToDo = async (selectedToDo, toDo, setToDo) => {
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     if (selectedToDo && userToken) {
-      const response = await fetch(
-        `http://10.0.2.2:3001/api/delete/${selectedToDo.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `${userToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const url = `http://${ipAdress}:3001/api/delete/${selectedToDo.id}`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `${userToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         const updatedToDo = toDo.filter(
@@ -112,7 +113,8 @@ export const updateCategory = async (
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     if (selectedToDo && userToken) {
-      const response = await fetch(`http://10.0.2.2:3001/api/updateCategory`, {
+      const url = `http://${ipAdress}:3001/api/updateCategory`;
+      const response = await fetch(url, {
         method: "PUT",
         headers: {
           Authorization: `${userToken}`,

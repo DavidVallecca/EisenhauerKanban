@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { sha256 } from "react-native-sha256";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ipAdress } from "@env";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -42,7 +43,8 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async (hash) => {
     try {
-      const response = await fetch("http://10.0.2.2:3001/api/users/login", {
+      const url = `http://${ipAdress}:3001/api/users/login`;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

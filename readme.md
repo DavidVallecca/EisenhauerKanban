@@ -1,5 +1,7 @@
 # EisenhauerKanban
 
+## Installation description
+
 open Terminal in root directory
 
 ## Backend:
@@ -11,6 +13,8 @@ open Terminal in root directory
 run: cd ..
 
 ## Frontend:
+
+- store your local IP address in the "ipAdress.env" file
 
 ### iOS (only for Mac)
 

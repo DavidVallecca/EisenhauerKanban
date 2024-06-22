@@ -1,7 +1,5 @@
 "use strict";
 
-//https://console.firebase.google.com/u/0/project/eisenhauer-kanban/firestore/data/~2Fuser~2FDaveVallecca@gmail.com?view=panel-view&scopeType=collection&scopeName=%2FDaveVallecca@gmail.com&query=
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const { db } = require("./firebase");
